@@ -1,0 +1,101 @@
+import { useNavigate } from 'react-router-dom';
+import Header from './Header';
+import { useContext, useState } from 'react';
+import { GlobalContext } from '../context/GlobalState';
+import apiClient from './http-common';
+
+function SignIn() {
+    const { setUser, setIsLoggedIn, accessToken, setAccessToken } =
+        useContext(GlobalContext);
+    const [errors, setErrors] = useState(null);
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+    });
+
+    const navigate = useNavigate();
+
+    function validator() {
+        //console.log(state);
+        if (state.email === '' || state.password === '') {
+            setErrors('Some field is empty!');
+        } else {
+            setErrors(null);
+            return true;
+        }
+    }
+    function handleChange(e) {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value,
+        });
+    }
+    async function handleSubmitOnClick(e) {
+        e.preventDefault();
+        if (validator()) {
+            await signInPostData();
+        } else {
+            console.log(state);
+        }
+    }
+    async function signInPostData() {
+        try {
+            const url = `/signin`;
+            const data = JSON.stringify(state);
+            const res = apiClient.post(url, data).then((response) => {
+                const token = response.data.accessToken;
+                const userData = response.data.user;
+                if (response.data.accessToken) {
+                    setAccessToken(token);
+                    setIsLoggedIn(true);
+                    setUser(userData);
+                    localStorage.setItem('bookUser', JSON.stringify(userData));
+                }
+                navigate('/');
+            });
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+    return (
+        <div>
+            <Header />
+            <form className="sign-in-form-container" method="Post">
+                <h3>Sign In</h3>
+                {errors !== null ? (
+                    <div className="error">{errors}</div>
+                ) : (
+                    <div></div>
+                )}
+
+                <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
+                    Sign In
+                </button>
+            </form>
+        </div>
+    );
+}
+
+export default SignIn;

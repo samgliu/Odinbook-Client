@@ -1,3 +1,27 @@
+# OdinBook client
+
+# Description
+
+    OdinBook client
+
+# TODO List
+
+# Built With
+
+-   React
+-   HTML/Javascript/CSS
+
+# Feature:
+
+-   sign up/in/out
+-   Post/Comment/Like add/delete with picture
+-   Friend with other user
+-   Profile Edit
+
+# config:
+
+# API Usage:
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
