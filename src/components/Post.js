@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import apiClient from './http-common';
 
 function Post({ post, deletePostLocal }) {
-    const { isAdmin } = useContext(GlobalContext);
     const navigate = useNavigate();
     async function handleDeleteOnClick(e) {
         e.preventDefault();
@@ -24,7 +23,30 @@ function Post({ post, deletePostLocal }) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
     }
-    return <div>post</div>;
+
+    return (
+        <div className="post-container" id={post._id}>
+            <div className="author-container">
+                <Link to={`/${post.Author.Username}/profile`}>
+                    <h6>
+                        {post.Author.Firstname} {post.Author.Lastname}
+                    </h6>
+                    <img src={post.Author.Avatar} alt="" />
+                </Link>
+                <p>{post.Timestamp.substring(0, 10)}</p>
+            </div>
+            <div className="post-header">
+                <p className="content-preview">{post.Content}</p>
+                <div>
+                    <p>Likes: {post.Likes.length}</p>
+                    <p>Comments: {post.Comments.length}</p>
+                </div>
+                <div>
+                    <input></input>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default Post;

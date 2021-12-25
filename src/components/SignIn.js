@@ -43,13 +43,15 @@ function SignIn() {
             const url = `/signin`;
             const data = JSON.stringify(state);
             const res = apiClient.post(url, data).then((response) => {
-                const token = response.data.accessToken;
                 const userData = response.data.user;
-                if (response.data.accessToken) {
+                if (response.data.accessToken && response.data.refreshToken) {
+                    const token = response.data.accessToken;
+                    const refresh = response.data.refreshToken;
                     setAccessToken(token);
                     setIsLoggedIn(true);
                     setUser(userData);
                     localStorage.setItem('bookUser', JSON.stringify(userData));
+                    sessionStorage.setItem('rt', refresh);
                 }
                 navigate('/');
             });

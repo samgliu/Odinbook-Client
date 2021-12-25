@@ -1,9 +1,18 @@
 import Post from './Post';
 import apiClient from './http-common';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 
 function Posts({ posts }) {
-    useEffect(() => {}, []); // dependency
+    const {
+        user,
+        setUser,
+        isLoggedIn,
+        setIsLoggedIn,
+        accessToken,
+        setAccessToken,
+    } = useContext(GlobalContext);
+
     function deletePostLocal(id) {
         const newPosts = posts.filter((post) => post._id !== id);
         //setPosts(newPosts);
@@ -17,9 +26,12 @@ function Posts({ posts }) {
             />
         );
     };
-    //{posts.map((post) => postRender(post))}
     if (posts) {
-        return <div className="posts-container"></div>;
+        return (
+            <div className="posts-container">
+                {posts.map((post) => postRender(post))}
+            </div>
+        );
     } else {
         return <div></div>;
     }

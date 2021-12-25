@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
@@ -6,13 +6,14 @@ import apiClient from './http-common';
 function Header() {
     const { user, setUser, isLoggedIn, setIsLoggedIn } =
         useContext(GlobalContext);
-
+    const navigate = useNavigate();
     async function handleLogOut(e) {
         e.preventDefault();
         setUser(null);
         setIsLoggedIn(false);
         localStorage.removeItem('bookUser');
         await apiClient.get('/logout');
+        navigate('/signin');
     }
     function handleChat(e) {
         e.preventDefault();
