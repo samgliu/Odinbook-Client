@@ -3,7 +3,7 @@ import apiClient from './http-common';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function Posts({ posts }) {
+function Posts({ posts, handleDeletePostLocal }) {
     const {
         user,
         setUser,
@@ -13,16 +13,12 @@ function Posts({ posts }) {
         setAccessToken,
     } = useContext(GlobalContext);
 
-    function deletePostLocal(id) {
-        const newPosts = posts.filter((post) => post._id !== id);
-        //setPosts(newPosts);
-    }
     const postRender = (post) => {
         return (
             <Post
                 post={post}
                 key={post._id}
-                deletePostLocal={(id) => deletePostLocal(id)}
+                deletePostLocal={(id) => handleDeletePostLocal(id)}
             />
         );
     };

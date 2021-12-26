@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 
-function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
+function NewComment({ comments, handleNewTargetComment, postId }) {
     const [errors, setErrors] = useState(null);
     const [state, setState] = useState({
         picture: '',
@@ -37,14 +37,14 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     async function handleSubmitOnClick(e) {
         e.preventDefault();
         if (validator()) {
-            await newPostPostData();
+            await newCommentPostData();
         } else {
             console.log(state);
         }
     }
-    async function newPostPostData() {
+    async function newCommentPostData() {
         try {
-            const params = `/${username}/create-post`;
+            const params = `/${postId}/comment-create`;
             const accessHeader = {
                 headers: {
                     'x-access-token': accessToken,
@@ -57,8 +57,10 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
             );
 
             if (res.status === 200) {
-                const newPosts = [res.data, ...profilePost];
-                handleNewTargetPost(newPosts);
+                console.log(res.data);
+                const newComments = [...comments, res.data];
+                console.log(newComments);
+                handleNewTargetComment(newComments);
                 setState({
                     picture: '',
                     content: '',
@@ -72,7 +74,6 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     return (
         <div>
             <form className="newpost-form-container">
-                <h3>New Post</h3>
                 {errors !== null ? (
                     <div className="error">{errors}</div>
                 ) : (
@@ -80,13 +81,11 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
                 )}
 
                 <div className="form-group">
-                    <textarea
+                    <input
                         type="text"
                         value={state.content}
                         name="content"
-                        rows="5"
-                        cols="60"
-                        placeholder="Enter content"
+                        placeholder="Comment..."
                         onChange={handleChange}
                         required
                     />
@@ -100,4 +99,4 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     );
 }
 
-export default NewTargetPost;
+export default NewComment;

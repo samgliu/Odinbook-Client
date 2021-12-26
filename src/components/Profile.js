@@ -64,7 +64,7 @@ function Profile() {
                         'x-refresh-token': sessionStorage.getItem('rt'),
                     },
                 };
-                console.log(refreshHeader.headers['x-refresh-token']);
+                //console.log(refreshHeader.headers['x-refresh-token']);
                 apiClient
                     .get('/refreshNewAccessToken', refreshHeader)
                     .then((response) => {
@@ -112,6 +112,7 @@ function Profile() {
                 <ProfileDetail profileData={profileData} />
                 <NewTargetPost
                     username={username}
+                    profilePost={profilePost}
                     handleNewTargetPost={(nd) => handleNewTargetPost(nd)}
                 />
                 <Posts posts={profilePost} />

@@ -18,7 +18,7 @@ function ProfileDetail({ profileData }) {
     } = useContext(GlobalContext);
 
     const navigate = useNavigate();
-    console.log(profileData);
+    //console.log(profileData);
     if (profileData) {
         return (
             <div>
@@ -31,7 +31,11 @@ function ProfileDetail({ profileData }) {
                     </Link>
                 </div>
                 <div>
-                    <p>Posts:{profileData.Posts.length}</p>
+                    <p>
+                        Posts:
+                        {profileData.Posts.length +
+                            profileData.receivedPosts.length}
+                    </p>
                 </div>
             </div>
         );

@@ -40,6 +40,11 @@ function Home(props) {
         setPosts(newData);
     }
 
+    function handleDeletePostLocal(id) {
+        const newPosts = posts.filter((post) => post._id !== id);
+        setPosts(newPosts);
+    }
+
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
         async function getPostsData() {
@@ -73,6 +78,7 @@ function Home(props) {
                     })
                     .catch((error) => {
                         //console.clear(); // clear 401
+                        setIsLoggedIn(false);
                         navigate('/signin');
                     });
             }
@@ -97,7 +103,10 @@ function Home(props) {
                 sortPosts={sortPosts}
                 posts={posts}
             />
-            <Posts posts={posts} />
+            <Posts
+                posts={posts}
+                handleDeletePostLocal={(id) => handleDeletePostLocal(id)}
+            />
             <Footer />
         </div>
     );
