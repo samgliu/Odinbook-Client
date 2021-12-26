@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function Profile() {
+function Profile(props) {
     const {
         user,
         setUser,
@@ -17,7 +17,7 @@ function Profile() {
         accessToken,
         setAccessToken,
     } = useContext(GlobalContext);
-    const username = useParams().username;
+    const { username } = useParams(); // dynamic fetch data usage!
     const [profilePost, setProfilePost] = useState(null);
     const [profileData, setProfileData] = useState(null);
     const [profilePostsCounter, setProfilePostsCounter] = useState(null);
@@ -29,8 +29,29 @@ function Profile() {
     };
 
     async function extractPost(data) {
-        let arr = [...data.receivedPosts];
-        arr.push(...data.Posts);
+        const isUserProfile = false;
+        const arr = [];
+        if (user.Username === 'username') {
+            isUserProfile = true;
+        }
+        data.receivedPosts.forEach((post) => {
+            //console.log(friend);
+            if (String(user.Username) === String(post.Author.Username)) {
+                post.isAuth = true;
+            } else {
+                post.isAuth = isUserProfile;
+            }
+            arr.push(post);
+        });
+        data.Posts.forEach((post) => {
+            //console.log(friend);
+            if (String(user.Username) === String(post.Author.Username)) {
+                post.isAuth = true;
+            } else {
+                post.isAuth = isUserProfile;
+            }
+            arr.push(post);
+        });
         return arr;
     }
 
@@ -49,17 +70,21 @@ function Profile() {
         const newPosts = profilePost.filter((post) => post._id !== id);
         setProfilePost(newPosts);
     }
-
+    /*
     async function handleDropdownOnClick(postId) {
         const params = `/${username}/${postId}/profile-post-auth`;
-        const res = await apiClient.get(params, accessHeader);
-        if (res.status === 200) {
-            return true;
-        } else {
-            return false;
+        try {
+            const res = await apiClient.get(params, accessHeader);
+            if (res.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
-
+*/
     async function handleDeletePost(postId) {
         try {
             const params = `/${username}/${postId}/profile-post-delete`;
@@ -71,6 +96,28 @@ function Profile() {
             }
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+    /*
+    async function handleCmtDropdownOnClick(postId, cmtId) {
+        const params = `/${username}/${postId}/comment/${cmtId}/profile-cmt-auth`;
+        const res = await apiClient.get(params, accessHeader);
+        //console.log(res.data);
+        if (res.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+*/
+    async function handleCmtDeleteOnClick(postId, cmtId) {
+        //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
+        const params = `/${username}/${postId}/comment/${cmtId}/profile-delete`;
+        const res = await apiClient.delete(params, accessHeader);
+        //console.log(res.data);
+        if (res.status === 200) {
+        } else {
+            //
         }
     }
 
@@ -127,7 +174,7 @@ function Profile() {
         } else {
             navigate('/signin');
         }
-    }, [setUser, setIsLoggedIn, setAccessToken, accessToken]);
+    }, [setUser, setIsLoggedIn, setAccessToken, accessToken, username]);
 
     /* other program ex.
     async function postCommentData(name, content) {
@@ -157,10 +204,8 @@ function Profile() {
                 />
                 <Posts
                     posts={profilePost}
-                    handleDropdownOnClick={(postId) =>
-                        handleDropdownOnClick(postId)
-                    }
                     handleDeletePost={(id) => handleDeletePost(id)}
+                    handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
                 />
                 <Footer />
             </div>

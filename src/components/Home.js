@@ -24,9 +24,24 @@ function Home(props) {
         },
     };
 
-    async function extractPost(data) {
+    /*async function extractPost(data) {
         let arr = [...data.Posts];
         //console.log(data);
+        data.Friends.forEach((friend) => {
+            //console.log(friend);
+            arr.push(...friend.Posts);
+        });
+
+        return arr;
+    }*/
+
+    async function extractPost(data) {
+        let arr = [];
+        data.Posts.forEach((post) => {
+            //console.log(friend);
+            post.isAuth = true;
+            arr.push(post);
+        });
         data.Friends.forEach((friend) => {
             //console.log(friend);
             arr.push(...friend.Posts);
@@ -49,7 +64,7 @@ function Home(props) {
         const newPosts = posts.filter((post) => post._id !== id);
         setPosts(newPosts);
     }
-
+    /*
     async function handleDropdownOnClick(postId) {
         const params = `/${postId}/auth`;
         const res = await apiClient.get(params, accessHeader);
@@ -59,7 +74,7 @@ function Home(props) {
             return false;
         }
     }
-
+*/
     async function handleDeletePost(postId) {
         try {
             const params = `/${postId}/delete`;
@@ -72,7 +87,7 @@ function Home(props) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
     }
-
+    /*
     async function handleCmtDropdownOnClick(postId, cmtId) {
         //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
         const params = `/${postId}/comment/${cmtId}/cmt-auth`;
@@ -83,7 +98,7 @@ function Home(props) {
         } else {
             return false;
         }
-    }
+    }*/
 
     async function handleCmtDeleteOnClick(postId, cmtId) {
         //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
@@ -91,7 +106,6 @@ function Home(props) {
         const res = await apiClient.delete(params, accessHeader);
         //console.log(res.data);
         if (res.status === 200) {
-            //FIXME local delete comment
         } else {
             //
         }
@@ -157,11 +171,7 @@ function Home(props) {
             />
             <Posts
                 posts={posts}
-                handleDropdownOnClick={(postId) =>
-                    handleDropdownOnClick(postId)
-                }
                 handleDeletePost={(id) => handleDeletePost(id)}
-                handleCmtDropdown={(c, p) => handleCmtDropdownOnClick(c, p)}
                 handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
             />
             <Footer />

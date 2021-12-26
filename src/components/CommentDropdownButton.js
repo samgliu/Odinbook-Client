@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import apiClient from './http-common';
 
-const CommentDropdownButton = ({
-    handleDropdownOnClick,
-    handleDelete,
-    hasAuth,
-}) => {
+const CommentDropdownButton = ({ handleDelete, hasAuth }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleClicked = (e) => {
         e.preventDefault();
         setIsMenuOpen(!isMenuOpen);
-        handleDropdownOnClick();
     };
     const deleteOnClick = (e) => {
         e.preventDefault();

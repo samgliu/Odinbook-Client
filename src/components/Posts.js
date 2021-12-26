@@ -3,13 +3,7 @@ import apiClient from './http-common';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function Posts({
-    posts,
-    handleDeletePost,
-    handleDropdownOnClick,
-    handleCmtDropdown,
-    handleCmtDelete,
-}) {
+function Posts({ posts, handleDeletePost, handleCmtDelete }) {
     const {
         user,
         setUser,
@@ -18,9 +12,7 @@ function Posts({
         accessToken,
         setAccessToken,
     } = useContext(GlobalContext);
-    async function localHandleCmtDropdown(c, p) {
-        return await handleCmtDropdown(c, p);
-    }
+
     async function localHandleCmtDelete(c, p) {
         handleCmtDelete(c, p);
     }
@@ -30,12 +22,6 @@ function Posts({
                 post={post}
                 key={post._id}
                 handleDeletePost={(id) => handleDeletePost(id)}
-                handleDropdownOnClick={(postId) =>
-                    handleDropdownOnClick(postId)
-                }
-                handleCmtDropdownOnClick={(c, p) =>
-                    localHandleCmtDropdown(c, p)
-                }
                 handleCmtDeleteOnClick={(c, p) => localHandleCmtDelete(c, p)}
             />
         );

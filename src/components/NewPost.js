@@ -56,6 +56,7 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
                 accessHeader
             );
             if (res.status === 200) {
+                res.data.isAuth = true; // add isAuth:true to local new post
                 const newPosts = [res.data, ...posts];
                 handleNewSelfPost(newPosts);
                 setState({

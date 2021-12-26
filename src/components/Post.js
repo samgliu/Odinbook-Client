@@ -7,13 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 
-function Post({
-    post,
-    handleDeletePost,
-    handleDropdownOnClick,
-    handleCmtDropdownOnClick,
-    handleCmtDeleteOnClick,
-}) {
+function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
     const navigate = useNavigate();
     const [comments, setComments] = useState(null);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -34,16 +28,34 @@ function Post({
         },
     };
     const postId = post._id;
+    async function extractComments() {
+        const localArr = [];
+        async function lp() {
+            const originalComments = post.Comments;
+            const uid = String(user._id);
+            const isPostAuth = String(user._id) === String(post.Author._id);
+            originalComments.forEach((cmt) => {
+                if (String(user._id) === String(cmt.Author._id)) {
+                    cmt.isAuth = true;
+                } else {
+                    cmt.isAuth = isPostAuth;
+                }
+                localArr.push(cmt);
+            });
+        }
+        await lp();
+        return localArr;
+    }
 
     useEffect(() => {
-        setComments(post.Comments);
+        extractComments(post.Comments).then((cmts) => setComments(cmts));
+
         setCommentsCounter(post.Comments.length);
         setLikesCounter(post.Likes.length);
     }, [setComments]);
 
     async function handleDropdown() {
-        const tf = await handleDropdownOnClick(postId);
-        setHasAuth(tf);
+        setHasAuth(post.isAuth);
     }
     async function handleNewTargetComment(newData) {
         setComments(newData);
@@ -62,10 +74,6 @@ function Post({
     }
     async function handleDeleteOnClick() {
         handleDeletePost(post._id);
-    }
-
-    async function cmtDropdownOnClick(cid) {
-        return await handleCmtDropdownOnClick(post._id, cid);
     }
 
     async function cmtDeleteOnClick(cid) {
@@ -104,7 +112,6 @@ function Post({
                 {isCommentOpen ? (
                     <Comments
                         comments={comments}
-                        handleCmtDropdownOnClick={(c) => cmtDropdownOnClick(c)}
                         handleCommentDeleteOnClick={(c) => cmtDeleteOnClick(c)}
                         handleCmtDeleteOnClickLocal={(c) =>
                             handleDeleteCommentLocal(c)

@@ -57,9 +57,10 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
             );
 
             if (res.status === 200) {
-                console.log(res.data);
+                //console.log(res.data);
+                res.data.isAuth = true;
                 const newComments = [...comments, res.data];
-                console.log(newComments);
+                //console.log(newComments);
                 handleNewTargetComment(newComments);
                 setState({
                     picture: '',

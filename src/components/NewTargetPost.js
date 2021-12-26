@@ -57,6 +57,7 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
             );
 
             if (res.status === 200) {
+                res.data.isAuth = true;
                 const newPosts = [res.data, ...profilePost];
                 handleNewTargetPost(newPosts);
                 setState({

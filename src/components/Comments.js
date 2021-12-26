@@ -6,7 +6,6 @@ import { GlobalContext } from '../context/GlobalState';
 
 function Comments({
     comments,
-    handleCmtDropdownOnClick,
     handleCommentDeleteOnClick,
     handleCmtDeleteOnClickLocal,
 }) {
@@ -19,9 +18,7 @@ function Comments({
         accessToken,
         setAccessToken,
     } = useContext(GlobalContext);
-    async function cmtDropdownOnClick(cid) {
-        return await handleCmtDropdownOnClick(cid);
-    }
+
     async function cmtDeleteOnClick(cid) {
         await handleCommentDeleteOnClick(cid);
     }
@@ -34,7 +31,6 @@ function Comments({
             <Comment
                 comment={comment}
                 key={comment._id}
-                handleCommentDropdownOnClick={(cid) => cmtDropdownOnClick(cid)}
                 handleCommentDeleteOnClick={(cid) => cmtDeleteOnClick(cid)}
                 deleteCmtLocal={(id) => deleteCommentLocal(id)}
             />

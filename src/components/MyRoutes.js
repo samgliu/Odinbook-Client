@@ -11,7 +11,7 @@ const MyRoutes = () => {
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/signin" element={<SignIn />} />
-                <Route exact path="/:username/profile" element={<Profile />} />
+                <Route path="/:username/profile" element={<Profile />} />
             </Routes>
         </HashRouter>
     );

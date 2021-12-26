@@ -5,20 +5,13 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 
-function Comment({
-    comment,
-    handleCommentDropdownOnClick,
-    handleCommentDeleteOnClick,
-    deleteCmtLocal,
-}) {
+function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
     const [hasAuth, setHasAuth] = useState(false);
     const navigate = useNavigate();
 
-    async function handleDropdown() {
-        const tf = await handleCommentDropdownOnClick(comment._id);
-        //console.log(tf);
-        setHasAuth(tf);
-    }
+    useEffect(() => {
+        setHasAuth(comment.isAuth);
+    }, [comment.isAuth, setHasAuth]);
 
     async function handleDeleteOnClick() {
         await handleCommentDeleteOnClick(comment._id);
@@ -39,7 +32,6 @@ function Comment({
                 <div className="comment-detail">
                     <p>{comment.Content}</p>
                     <CommentDropdownButton
-                        handleDropdownOnClick={() => handleDropdown()}
                         handleDelete={() => handleDeleteOnClick()}
                         hasAuth={hasAuth}
                     />
