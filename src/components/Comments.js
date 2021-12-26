@@ -4,7 +4,12 @@ import apiClient from './http-common';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function Comments({ comments }) {
+function Comments({
+    comments,
+    handleCmtDropdownOnClick,
+    handleCommentDeleteOnClick,
+    handleCmtDeleteOnClickLocal,
+}) {
     //console.log(comments);
     const {
         user,
@@ -14,10 +19,14 @@ function Comments({ comments }) {
         accessToken,
         setAccessToken,
     } = useContext(GlobalContext);
-
-    function deleteCommentLocal(id) {
-        const newComments = comments.filter((cmt) => cmt._id !== id);
-        //setPosts(newPosts);
+    async function cmtDropdownOnClick(cid) {
+        return await handleCmtDropdownOnClick(cid);
+    }
+    async function cmtDeleteOnClick(cid) {
+        await handleCommentDeleteOnClick(cid);
+    }
+    async function deleteCommentLocal(id) {
+        await handleCmtDeleteOnClickLocal(id);
     }
     const commentRender = (comment) => {
         //console.log(comment);
@@ -25,7 +34,9 @@ function Comments({ comments }) {
             <Comment
                 comment={comment}
                 key={comment._id}
-                deleteCommentLocal={(id) => deleteCommentLocal(id)}
+                handleCommentDropdownOnClick={(cid) => cmtDropdownOnClick(cid)}
+                handleCommentDeleteOnClick={(cid) => cmtDeleteOnClick(cid)}
+                deleteCmtLocal={(id) => deleteCommentLocal(id)}
             />
         );
     };

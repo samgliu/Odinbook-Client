@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function ProfileDetail({ profileData }) {
+function ProfileDetail({ profileData, profilePostsCounter }) {
     const {
         user,
         setUser,
@@ -33,8 +33,7 @@ function ProfileDetail({ profileData }) {
                 <div>
                     <p>
                         Posts:
-                        {profileData.Posts.length +
-                            profileData.receivedPosts.length}
+                        {profilePostsCounter}
                     </p>
                 </div>
             </div>

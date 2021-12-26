@@ -20,7 +20,13 @@ function Profile() {
     const username = useParams().username;
     const [profilePost, setProfilePost] = useState(null);
     const [profileData, setProfileData] = useState(null);
+    const [profilePostsCounter, setProfilePostsCounter] = useState(null);
     const navigate = useNavigate();
+    const accessHeader = {
+        headers: {
+            'x-access-token': accessToken,
+        },
+    };
 
     async function extractPost(data) {
         let arr = [...data.receivedPosts];
@@ -36,6 +42,36 @@ function Profile() {
 
     function handleNewTargetPost(newData) {
         setProfilePost(newData);
+        setProfilePostsCounter(profilePostsCounter + 1);
+    }
+
+    function handleDeletePostLocal(id) {
+        const newPosts = profilePost.filter((post) => post._id !== id);
+        setProfilePost(newPosts);
+    }
+
+    async function handleDropdownOnClick(postId) {
+        const params = `/${username}/${postId}/profile-post-auth`;
+        const res = await apiClient.get(params, accessHeader);
+        if (res.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async function handleDeletePost(postId) {
+        try {
+            const params = `/${username}/${postId}/profile-post-delete`;
+            const res = await apiClient.delete(params, accessHeader);
+            if (res.status === 200) {
+                handleDeletePostLocal(postId);
+                setProfilePostsCounter(profilePostsCounter - 1);
+                navigate(`/${username}/profile`);
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
     }
 
     useEffect(() => {
@@ -56,6 +92,7 @@ function Profile() {
                             const sortedPosts = await sortPosts(posts);
                             setProfilePost(sortedPosts);
                             setProfileData(res.data);
+                            setProfilePostsCounter(posts.length);
                         }
                     });
             } else {
@@ -109,13 +146,22 @@ function Profile() {
         return (
             <div>
                 <Header />
-                <ProfileDetail profileData={profileData} />
+                <ProfileDetail
+                    profileData={profileData}
+                    profilePostsCounter={profilePostsCounter}
+                />
                 <NewTargetPost
                     username={username}
                     profilePost={profilePost}
                     handleNewTargetPost={(nd) => handleNewTargetPost(nd)}
                 />
-                <Posts posts={profilePost} />
+                <Posts
+                    posts={profilePost}
+                    handleDropdownOnClick={(postId) =>
+                        handleDropdownOnClick(postId)
+                    }
+                    handleDeletePost={(id) => handleDeletePost(id)}
+                />
                 <Footer />
             </div>
         );

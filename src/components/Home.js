@@ -18,6 +18,11 @@ function Home(props) {
     } = useContext(GlobalContext);
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
+    const accessHeader = {
+        headers: {
+            'x-access-token': accessToken,
+        },
+    };
 
     async function extractPost(data) {
         let arr = [...data.Posts];
@@ -43,6 +48,53 @@ function Home(props) {
     function handleDeletePostLocal(id) {
         const newPosts = posts.filter((post) => post._id !== id);
         setPosts(newPosts);
+    }
+
+    async function handleDropdownOnClick(postId) {
+        const params = `/${postId}/auth`;
+        const res = await apiClient.get(params, accessHeader);
+        if (res.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async function handleDeletePost(postId) {
+        try {
+            const params = `/${postId}/delete`;
+            const res = await apiClient.delete(params, accessHeader);
+            if (res.status === 200) {
+                handleDeletePostLocal(postId);
+                navigate('/');
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+
+    async function handleCmtDropdownOnClick(postId, cmtId) {
+        //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
+        const params = `/${postId}/comment/${cmtId}/cmt-auth`;
+        const res = await apiClient.get(params, accessHeader);
+        //console.log(res.data);
+        if (res.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async function handleCmtDeleteOnClick(postId, cmtId) {
+        //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
+        const params = `/${postId}/comment/${cmtId}/delete`;
+        const res = await apiClient.delete(params, accessHeader);
+        //console.log(res.data);
+        if (res.status === 200) {
+            //FIXME local delete comment
+        } else {
+            //
+        }
     }
 
     useEffect(() => {
@@ -105,7 +157,12 @@ function Home(props) {
             />
             <Posts
                 posts={posts}
-                handleDeletePostLocal={(id) => handleDeletePostLocal(id)}
+                handleDropdownOnClick={(postId) =>
+                    handleDropdownOnClick(postId)
+                }
+                handleDeletePost={(id) => handleDeletePost(id)}
+                handleCmtDropdown={(c, p) => handleCmtDropdownOnClick(c, p)}
+                handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
             />
             <Footer />
         </div>
