@@ -7,15 +7,63 @@ import apiClient from './http-common';
 
 function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
     const [hasAuth, setHasAuth] = useState(false);
+    const [likesCounter, setLikesCounter] = useState(null);
+    const [isLiked, setIsLiked] = useState(null);
+    const {
+        user,
+        setUser,
+        isLoggedIn,
+        setIsLoggedIn,
+        accessToken,
+        setAccessToken,
+    } = useContext(GlobalContext);
     const navigate = useNavigate();
+    const accessHeader = {
+        headers: {
+            'x-access-token': accessToken,
+        },
+    };
+    const commentId = comment._id;
 
     useEffect(() => {
         setHasAuth(comment.isAuth);
+        setIsLiked(comment.isLiked);
+        setLikesCounter(comment.Likes.length);
     }, [comment.isAuth, setHasAuth]);
 
     async function handleDeleteOnClick() {
         await handleCommentDeleteOnClick(comment._id);
         await deleteCmtLocal(comment._id);
+    }
+
+    async function handleLikeOnClick(e) {
+        e.preventDefault();
+        try {
+            const params = `/${commentId}/cmt-like`;
+            const res = await apiClient.get(params, accessHeader);
+            if (res.status === 200) {
+                //console.log(res.data);
+                setIsLiked(true);
+                setLikesCounter(likesCounter + 1);
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+
+    async function handleUnlikeOnClick(e) {
+        e.preventDefault();
+        try {
+            const params = `/${commentId}/cmt-unlike`;
+            const res = await apiClient.get(params, accessHeader);
+            if (res.status === 200) {
+                //console.log(res.data);
+                setIsLiked(false);
+                setLikesCounter(likesCounter - 1);
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
     }
 
     return (
@@ -28,6 +76,18 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
                     <img src={comment.Author.Avatar} alt="" />
                 </Link>
                 <p>{comment.Timestamp.substring(0, 10)}</p>
+                <div>
+                    <p>Likes: {likesCounter}</p>
+                    {isLiked ? (
+                        <button onClick={(e) => handleUnlikeOnClick(e)}>
+                            Unlike
+                        </button>
+                    ) : (
+                        <button onClick={(e) => handleLikeOnClick(e)}>
+                            Like
+                        </button>
+                    )}
+                </div>
 
                 <div className="comment-detail">
                     <p>{comment.Content}</p>

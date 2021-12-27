@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
-function Home(props) {
+function Home() {
     const {
         user,
         setUser,
@@ -35,16 +35,33 @@ function Home(props) {
         return arr;
     }*/
 
+    async function checkIsLiked(uid, arr) {
+        const yes = arr.some((item) => {
+            return String(item._id) === String(uid);
+        });
+        return yes;
+    }
+
     async function extractPost(data) {
         let arr = [];
         data.Posts.forEach((post) => {
-            //console.log(friend);
-            post.isAuth = true;
-            arr.push(post);
+            checkIsLiked(user._id, post.Likes).then((res) => {
+                post.isAuth = true;
+                post.isLiked = res;
+                arr.push(post);
+            });
         });
         data.Friends.forEach((friend) => {
             //console.log(friend);
-            arr.push(...friend.Posts);
+            const tempArr = friend.Posts;
+            tempArr.forEach((post) => {
+                checkIsLiked(user._id, post.Likes).then((res) => {
+                    post.isAuth = true;
+                    post.isLiked = res;
+                    arr.push(post);
+                });
+            });
+            //arr.push(...friend.Posts);
         });
 
         return arr;

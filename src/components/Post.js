@@ -14,6 +14,7 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
     const [hasAuth, setHasAuth] = useState(false);
     const [commentsCounter, setCommentsCounter] = useState(null);
     const [likesCounter, setLikesCounter] = useState(null);
+    const [isLiked, setIsLiked] = useState(null);
     const {
         user,
         setUser,
@@ -28,13 +29,25 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
         },
     };
     const postId = post._id;
+
+    async function checkIsLiked(uid, arr) {
+        const yes = arr.some((item) => {
+            return String(item._id) === String(uid);
+        });
+        return yes;
+    }
+
     async function extractComments() {
         const localArr = [];
         async function lp() {
             const originalComments = post.Comments;
             const uid = String(user._id);
             const isPostAuth = String(user._id) === String(post.Author._id);
-            originalComments.forEach((cmt) => {
+            originalComments.forEach(async (cmt) => {
+                checkIsLiked(uid, cmt.Likes).then((res) => {
+                    cmt.isLiked = res;
+                });
+
                 if (String(user._id) === String(cmt.Author._id)) {
                     cmt.isAuth = true;
                 } else {
@@ -49,7 +62,7 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
 
     useEffect(() => {
         extractComments(post.Comments).then((cmts) => setComments(cmts));
-
+        setIsLiked(post.isLiked);
         setCommentsCounter(post.Comments.length);
         setLikesCounter(post.Likes.length);
     }, [setComments]);
@@ -80,6 +93,36 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
         await handleCmtDeleteOnClick(post._id, cid);
     }
 
+    async function handleLikeOnClick(e) {
+        e.preventDefault();
+        try {
+            const params = `/${postId}/like`;
+            const res = await apiClient.get(params, accessHeader);
+            if (res.status === 200) {
+                //console.log(res.data);
+                setIsLiked(true);
+                setLikesCounter(likesCounter + 1);
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+
+    async function handleUnlikeOnClick(e) {
+        e.preventDefault();
+        try {
+            const params = `/${postId}/unlike`;
+            const res = await apiClient.get(params, accessHeader);
+            if (res.status === 200) {
+                //console.log(res.data);
+                setIsLiked(false);
+                setLikesCounter(likesCounter - 1);
+            }
+        } catch (err) {
+            //setPosts(fortmatResponse(err.response?.data || err));
+        }
+    }
+
     return (
         <div className="post-container" id={post._id}>
             <div className="author-container">
@@ -104,7 +147,16 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                     <p>Comments: {commentsCounter}</p>
                 </div>
                 <div>
-                    <button>Like</button>
+                    {isLiked ? (
+                        <button onClick={(e) => handleUnlikeOnClick(e)}>
+                            Unlike
+                        </button>
+                    ) : (
+                        <button onClick={(e) => handleLikeOnClick(e)}>
+                            Like
+                        </button>
+                    )}
+
                     <button onClick={(e) => handleCommentOpenClick(e)}>
                         Comment
                     </button>
