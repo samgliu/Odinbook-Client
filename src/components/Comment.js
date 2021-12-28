@@ -95,7 +95,21 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
                 </div>
 
                 <div className="comment-detail">
-                    <p>{comment.Content}</p>
+                    <div>
+                        {comment.Picture ? (
+                            <img
+                                src={
+                                    process.env.REACT_APP_API + comment.Picture
+                                }
+                                alt=""
+                                className="picture"
+                            />
+                        ) : (
+                            <div></div>
+                        )}
+                        <p>{comment.Content}</p>
+                    </div>
+
                     <CommentDropdownButton
                         handleDelete={() => handleDeleteOnClick()}
                         hasAuth={hasAuth}

@@ -6,6 +6,10 @@
 
 # TODO List
 
+# Status
+
+-   Working on
+
 # Built With
 
 -   React
