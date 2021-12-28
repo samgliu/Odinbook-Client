@@ -16,11 +16,16 @@ function Profile(props) {
         setIsLoggedIn,
         accessToken,
         setAccessToken,
+        checkIsInArray,
     } = useContext(GlobalContext);
     const { username } = useParams(); // dynamic fetch data usage!
     const [profilePost, setProfilePost] = useState(null);
     const [profileData, setProfileData] = useState(null);
+    const [profileId, setProfileId] = useState(null);
+    const [isFriend, setIsFriend] = useState(false);
+    const [isUserProfile, setIsUserProfile] = useState(false);
     const [profilePostsCounter, setProfilePostsCounter] = useState(null);
+
     const navigate = useNavigate();
     const accessHeader = {
         headers: {
@@ -28,12 +33,24 @@ function Profile(props) {
         },
     };
 
-    async function extractPost(data) {
-        const isUserProfile = false;
-        const arr = [];
-        if (user.Username === 'username') {
-            isUserProfile = true;
+    async function checkIsInFriend(uid, arr) {
+        if (arr) {
+            const res = arr.some((item) => {
+                return String(item._id) === String(uid);
+            });
+            return res;
+        } else {
+            return false;
         }
+    }
+
+    async function handleSetIsFriend(tf) {
+        setIsFriend(tf);
+    }
+
+    async function extractPost(data) {
+        const arr = [];
+
         data.receivedPosts.forEach((post) => {
             //console.log(friend);
             if (String(user.Username) === String(post.Author.Username)) {
@@ -135,6 +152,18 @@ function Profile(props) {
                     .then(async (res) => {
                         //console.log(res.data);
                         if (res.data) {
+                            setProfileId(res.data._id); //set target profile Id
+                            if (user._id === res.data._id) {
+                                setIsUserProfile(true);
+                            } else {
+                                setIsUserProfile(false);
+                                setIsFriend(
+                                    await checkIsInFriend(
+                                        user._id,
+                                        res.data.Friends
+                                    )
+                                );
+                            }
                             const posts = await extractPost(res.data);
                             const sortedPosts = await sortPosts(posts);
                             setProfilePost(sortedPosts);
@@ -196,6 +225,10 @@ function Profile(props) {
                 <ProfileDetail
                     profileData={profileData}
                     profilePostsCounter={profilePostsCounter}
+                    isUserProfile={isUserProfile}
+                    isFriend={isFriend}
+                    handleSetIsFriend={(tf) => handleSetIsFriend(tf)}
+                    profileId={profileId}
                 />
                 <NewTargetPost
                     username={username}

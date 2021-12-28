@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Posts from '../components/Posts';
 import NewPost from '../components/NewPost';
+import Friends from '../components/Friends';
 import apiClient from './http-common';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -138,7 +139,9 @@ function Home() {
                     },
                 };
                 const res = await apiClient.get('/posts', accessHeader);
-                //console.log(res);
+                const userData = res.data;
+                localStorage.setItem('bookUser', JSON.stringify(userData));
+                setUser(userData);
                 const posts = await extractPost(res.data);
                 const sortedPosts = await sortPosts(posts);
                 setPosts(sortedPosts);
@@ -180,12 +183,14 @@ function Home() {
     return (
         <div>
             <Header />
+            <Friends />
             <NewPost
                 handleNewSelfPost={(data) => handleNewSelfPost(data)}
                 extractPost={extractPost}
                 sortPosts={sortPosts}
                 posts={posts}
             />
+
             <Posts
                 posts={posts}
                 handleDeletePost={(id) => handleDeletePost(id)}
