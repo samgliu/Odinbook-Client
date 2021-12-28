@@ -18,6 +18,7 @@ function Profile(props) {
         setAccessToken,
         checkIsInArray,
     } = useContext(GlobalContext);
+
     const { username } = useParams(); // dynamic fetch data usage!
     const [profilePost, setProfilePost] = useState(null);
     const [profileData, setProfileData] = useState(null);

@@ -73,7 +73,12 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
                     <h6>
                         {comment.Author.Firstname} {comment.Author.Lastname}
                     </h6>
-                    <img src={comment.Author.Avatar} alt="" />
+                    <img
+                        src={`${
+                            process.env.REACT_APP_API + comment.Author.Avatar
+                        }`}
+                        alt=""
+                    />
                 </Link>
                 <p>{comment.Timestamp.substring(0, 10)}</p>
                 <div>

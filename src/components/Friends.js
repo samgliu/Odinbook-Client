@@ -79,7 +79,13 @@ function Friends({}) {
                             return (
                                 <li key={fr._id}>
                                     <Link to={`${fr.Username}/profile`}>
-                                        <img src={fr.Avatar} alt="" />
+                                        <img
+                                            src={
+                                                process.env.REACT_APP_API +
+                                                fr.Avatar
+                                            }
+                                            alt=""
+                                        />
                                     </Link>
                                     <div>
                                         {fr.Firstname + ' '}
@@ -120,9 +126,15 @@ function Friends({}) {
                         <ul>
                             {friendList.map((fr) => {
                                 return (
-                                    <li key={fr._id}>
+                                    <li key={`friend${fr._id}`}>
                                         <Link to={`${fr.Username}/profile`}>
-                                            <img src={fr.Avatar} alt="" />
+                                            <img
+                                                src={
+                                                    process.env.REACT_APP_API +
+                                                    fr.Avatar
+                                                }
+                                                alt=""
+                                            />
                                         </Link>
                                         <div>
                                             {fr.Firstname + ' '}

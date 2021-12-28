@@ -57,7 +57,7 @@ function Home() {
             const tempArr = friend.Posts;
             tempArr.forEach((post) => {
                 checkIsLiked(user._id, post.Likes).then((res) => {
-                    post.isAuth = true;
+                    post.isAuth = false;
                     post.isLiked = res;
                     arr.push(post);
                 });

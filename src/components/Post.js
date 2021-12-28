@@ -130,7 +130,12 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                     <h6>
                         {post.Author.Firstname} {post.Author.Lastname}
                     </h6>
-                    <img src={post.Author.Avatar} alt="" />
+                    <img
+                        src={`${
+                            process.env.REACT_APP_API + post.Author.Avatar
+                        }`}
+                        alt=""
+                    />
                 </Link>
                 <p>{post.Timestamp.substring(0, 10)}</p>
 
@@ -141,7 +146,20 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                 />
             </div>
             <div className="post-header">
-                <p className="content-preview">{post.Content}</p>
+                <div>
+                    {post.Picture ? (
+                        <img
+                            src={process.env.REACT_APP_API + post.Picture}
+                            alt=""
+                            className="picture"
+                        />
+                    ) : (
+                        <div></div>
+                    )}
+
+                    <p className="content-preview">{post.Content}</p>
+                </div>
+
                 <div>
                     <p>Likes: {likesCounter}</p>
                     <p>Comments: {commentsCounter}</p>

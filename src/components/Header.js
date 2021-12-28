@@ -31,6 +31,17 @@ function Header() {
                         Welcome back {user.Firstname} {user.Lastname}
                     </li>
                     <li>
+                        <Link
+                            to={{
+                                pathname: `/${user.Username}/profile`,
+
+                                state: { fromDashboard: false },
+                            }}
+                        >
+                            <p>Profile</p>
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/" onClick={handleChat}>
                             <p>Chat</p>
                         </Link>
