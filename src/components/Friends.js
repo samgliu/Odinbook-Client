@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 
-function Friends({}) {
+function Friends({ handleFriendMessageOnClick }) {
     const [friendRequestList, setFriendRequestList] = useState(null);
     const [friendList, setFriendList] = useState(null);
     const {
@@ -67,6 +67,11 @@ function Friends({}) {
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
+    }
+
+    async function friendMessageOnClick(e, tid, fullname) {
+        e.preventDefault();
+        handleFriendMessageOnClick(tid, fullname);
     }
 
     return (
@@ -136,7 +141,18 @@ function Friends({}) {
                                                 alt=""
                                             />
                                         </Link>
-                                        <div>
+                                        <div
+                                            className="clickable"
+                                            onClick={(e) =>
+                                                friendMessageOnClick(
+                                                    e,
+                                                    fr._id,
+                                                    fr.Firstname +
+                                                        ' ' +
+                                                        fr.Lastname
+                                                )
+                                            }
+                                        >
                                             {fr.Firstname + ' '}
                                             {fr.Lastname + ' '}
                                         </div>

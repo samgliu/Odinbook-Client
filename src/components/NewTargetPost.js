@@ -177,7 +177,7 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
                     </button>
                 )}
                 <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Post
+                    Send Post
                 </button>
             </form>
         </div>

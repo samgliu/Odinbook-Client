@@ -59,7 +59,7 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
         }
     }
     async function newPostPostData(data) {
-        console.log(data.picture);
+        //console.log(data.picture);
         try {
             const params = `/create-post-self`;
             const accessHeader = {
@@ -180,7 +180,7 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
                     </button>
                 )}
                 <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Post
+                    Send Post
                 </button>
             </form>
         </div>

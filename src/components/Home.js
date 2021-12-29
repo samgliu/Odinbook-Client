@@ -3,6 +3,7 @@ import Footer from '../components/Footer';
 import Posts from '../components/Posts';
 import NewPost from '../components/NewPost';
 import Friends from '../components/Friends';
+import Chat from '../components/Chat';
 import apiClient from './http-common';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -17,7 +18,10 @@ function Home() {
         accessToken,
         setAccessToken,
     } = useContext(GlobalContext);
+    const [isChatOpen, setIsChatOpen] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [messageTid, setMessageTid] = useState([]);
+    const [chattingWith, setChattingWith] = useState(null);
     const navigate = useNavigate();
     const accessHeader = {
         headers: {
@@ -180,10 +184,35 @@ function Home() {
         }
     }, [setUser, setIsLoggedIn, accessToken]);
 
+    async function handleFriendMessageOnClick(tid, fullname) {
+        setIsChatOpen(true);
+        setMessageTid(tid);
+        setChattingWith(fullname);
+    }
+
+    async function handleChatClose() {
+        setIsChatOpen(false);
+    }
+
     return (
         <div>
             <Header />
-            <Friends />
+            <Friends
+                handleFriendMessageOnClick={(tid, fullname) =>
+                    handleFriendMessageOnClick(tid, fullname)
+                }
+            />
+            {user && isChatOpen ? (
+                <Chat
+                    uid={user._id}
+                    tid={messageTid}
+                    chattingWith={chattingWith}
+                    handleChatClosed={() => handleChatClose()}
+                />
+            ) : (
+                <div></div>
+            )}
+
             <NewPost
                 handleNewSelfPost={(data) => handleNewSelfPost(data)}
                 extractPost={extractPost}

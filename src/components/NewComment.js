@@ -182,7 +182,7 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
                     </button>
                 )}
                 <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Post
+                    Send Comment
                 </button>
             </form>
         </div>
