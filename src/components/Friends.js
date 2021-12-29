@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+const { v4: uuidv4 } = require('uuid');
 
 function Friends({ handleFriendMessageOnClick }) {
     const [friendRequestList, setFriendRequestList] = useState(null);
@@ -82,7 +83,7 @@ function Friends({ handleFriendMessageOnClick }) {
                     <ul>
                         {friendRequestList.map((fr) => {
                             return (
-                                <li key={fr._id}>
+                                <li key={uuidv4()}>
                                     <Link to={`${fr.Username}/profile`}>
                                         <img
                                             src={
@@ -131,7 +132,7 @@ function Friends({ handleFriendMessageOnClick }) {
                         <ul>
                             {friendList.map((fr) => {
                                 return (
-                                    <li key={`friend${fr._id}`}>
+                                    <li key={uuidv4()}>
                                         <Link to={`${fr.Username}/profile`}>
                                             <img
                                                 src={

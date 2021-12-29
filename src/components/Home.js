@@ -5,8 +5,9 @@ import NewPost from '../components/NewPost';
 import Friends from '../components/Friends';
 import Chat from '../components/Chat';
 import apiClient from './http-common';
+import { io } from 'socket.io-client';
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
 function Home() {
@@ -21,13 +22,57 @@ function Home() {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [posts, setPosts] = useState([]);
     const [messageTid, setMessageTid] = useState([]);
+    const [onlineUsers, setOnlineUser] = useState([]);
+    const [arrivalMessage, setArrivalMessage] = useState('');
     const [chattingWith, setChattingWith] = useState(null);
+    //const [socket, setSocket] = useState(null);
+    const socket = useRef();
     const navigate = useNavigate();
+    const isMounted = useRef(false);
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
         },
     };
+
+    // this hook to let the socket only call once
+    useEffect(() => {
+        socket.current = io(process.env.REACT_APP_SOCKET);
+        socket.current.on('getMessage', (data) => {
+            console.log(data);
+            if (user) {
+                //if (user._id === data.receiverId) {
+                setArrivalMessage({
+                    SendBy: data.senderId,
+                    receiverId: data.receiverId,
+                    text: data.text,
+                    Timestamp: new Date(),
+                });
+                // }
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log(arrivalMessage);
+        setArrivalMessage(arrivalMessage);
+    }, [arrivalMessage]);
+
+    useEffect(() => {
+        isMounted.current = true;
+        if (user && socket && socket.current && socket.current.id) {
+            console.log('socket.id: ' + socket.current.id);
+            socket.current.emit('addUser', user._id);
+            socket.current.on('getUsers', (users) => {
+                console.log(users);
+                // use isMounted to fix memory leak
+                if (isMounted.current) setOnlineUser(users);
+            });
+        }
+        return () => {
+            isMounted.current = false;
+        };
+    }, [accessToken]); // if user refresh too much
 
     /*async function extractPost(data) {
         let arr = [...data.Posts];
@@ -39,6 +84,15 @@ function Home() {
 
         return arr;
     }*/
+
+    function handleSocketSendMessage(rid, text) {
+        console.log(rid, text);
+        socket.current.emit('sendMessage', {
+            senderId: user._id,
+            receiverId: rid,
+            text: text,
+        });
+    }
 
     async function checkIsLiked(uid, arr) {
         const yes = arr.some((item) => {
@@ -135,6 +189,7 @@ function Home() {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
+        //console.log(accessToken);
         async function getPostsData() {
             if (accessToken != null) {
                 const accessHeader = {
@@ -183,6 +238,7 @@ function Home() {
             navigate('/signin');
         }
     }, [setUser, setIsLoggedIn, accessToken]);
+    //}, [setUser, setIsLoggedIn, accessToken]);
 
     async function handleFriendMessageOnClick(tid, fullname) {
         setIsChatOpen(true);
@@ -202,12 +258,16 @@ function Home() {
                     handleFriendMessageOnClick(tid, fullname)
                 }
             />
-            {user && isChatOpen ? (
+            {user ? (
                 <Chat
+                    displayClass={isChatOpen ? 'active' : 'hidden'}
                     uid={user._id}
                     tid={messageTid}
                     chattingWith={chattingWith}
                     handleChatClosed={() => handleChatClose()}
+                    handleSocketSend={(rid, text) =>
+                        handleSocketSendMessage(rid, text)
+                    }
                 />
             ) : (
                 <div></div>

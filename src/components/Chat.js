@@ -4,7 +4,14 @@ import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 const { v4: uuidv4 } = require('uuid');
 
-function Chat({ uid, tid, chattingWith, handleChatClosed }) {
+function Chat({
+    uid,
+    tid,
+    chattingWith,
+    handleChatClosed,
+    handleSocketSend,
+    displayClass,
+}) {
     const [text, setText] = useState('');
     const [chatHistory, setChatHistory] = useState('');
     const [friendName, setFriendName] = useState('');
@@ -73,6 +80,7 @@ function Chat({ uid, tid, chattingWith, handleChatClosed }) {
             const res = await apiClient.post(params, data, accessHeader);
 
             if (res.status === 200) {
+                handleSocketSend(targetId, text);
                 console.log('msg sent');
             }
         } catch (err) {
@@ -86,13 +94,13 @@ function Chat({ uid, tid, chattingWith, handleChatClosed }) {
     }
     useEffect(() => {
         // console.log('in useEffect', allRooms);
-        if (uid && tid && accessToken) {
+        if (displayClass === 'active' && uid && tid && accessToken) {
             fetchChatHistory(uid, tid);
         }
-    }, [setChatHistory, uid, tid, setFriendName]);
+    }, [setChatHistory, uid, tid, setFriendName, displayClass]);
 
     return (
-        <div>
+        <div className={displayClass}>
             <div>Chatting with {chattingWith}</div>
             <button
                 onClick={(e) => {

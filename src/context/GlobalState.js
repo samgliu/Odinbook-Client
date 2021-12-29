@@ -23,7 +23,7 @@ export const GlobalProvider = ({ children }) => {
             secondsPast =
                 (now.getTime() - new Date(timeStamp).getTime()) / 1000;
         if (secondsPast < 60) {
-            return Math.round(secondsPast) + ' seconds';
+            return '1 minute';
         }
         if (secondsPast < 3600) {
             const res = parseInt(secondsPast / 60);
