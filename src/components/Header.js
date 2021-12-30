@@ -45,7 +45,7 @@ function Header() {
         //console.log(keyword);
         if (keyword !== '') {
             let arr = await searchUserFromServer(keyword);
-            console.log(arr);
+            //console.log(arr);
             setSearchResult(arr);
         }
     }
@@ -54,7 +54,7 @@ function Header() {
             const params = `/user-search?searchKey=${keyword}`;
             const res = await apiClient.get(params, accessHeader);
             if (res.status === 200) {
-                console.log(res.data);
+                //console.log(res.data);
                 return res.data;
             }
         } catch (err) {
