@@ -103,14 +103,21 @@ function Header() {
                                             alt=""
                                         />
                                     </div>
-
+                                    <Link
+                                        to={{
+                                            pathname: `${resUser.Username}/profile/`,
+                                        }}
+                                    >
+                                        <strong>@{resUser.Username}</strong>
+                                    </Link>
+                                    &nbsp;&nbsp;
                                     <Link
                                         to={{
                                             pathname: `${resUser.Username}/profile/`,
                                         }}
                                     >
                                         <strong>
-                                            {resUser.Firstname}{' '}
+                                            {resUser.Firstname}
                                             {resUser.Lastname}
                                         </strong>
                                     </Link>
