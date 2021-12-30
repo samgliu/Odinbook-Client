@@ -74,6 +74,7 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
                         {comment.Author.Firstname} {comment.Author.Lastname}
                     </h6>
                     <img
+                        className="avatar"
                         src={`${
                             process.env.REACT_APP_API + comment.Author.Avatar
                         }`}

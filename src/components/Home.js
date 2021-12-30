@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import '../style/Home.css';
 
 function Home() {
     const {
@@ -24,6 +25,7 @@ function Home() {
     const [messageTid, setMessageTid] = useState([]);
     const [onlineUsers, setOnlineUser] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState('');
+    const [newMessageNotification, setNewMessageNotification] = useState(false);
     const [chattingWith, setChattingWith] = useState(null);
     //const [socket, setSocket] = useState(null);
     const socket = useRef();
@@ -40,22 +42,22 @@ function Home() {
         socket.current = io(process.env.REACT_APP_SOCKET);
         socket.current.on('getMessage', (data) => {
             console.log(data);
-            if (user) {
-                //if (user._id === data.receiverId) {
-                setArrivalMessage({
-                    SendBy: data.senderId,
-                    receiverId: data.receiverId,
-                    text: data.text,
-                    Timestamp: new Date(),
-                });
-                // }
-            }
+
+            //if (user._id === data.receiverId) {
+            setArrivalMessage({
+                SendBy: data.senderId,
+                receiverId: data.receiverId,
+                text: data.text,
+                Timestamp: new Date(),
+            });
+            // }
         });
     }, []);
 
     useEffect(() => {
-        console.log(arrivalMessage);
-        setArrivalMessage(arrivalMessage);
+        if (arrivalMessage) {
+            console.log(arrivalMessage.receiverId);
+        }
     }, [arrivalMessage]);
 
     useEffect(() => {
@@ -72,7 +74,7 @@ function Home() {
         return () => {
             isMounted.current = false;
         };
-    }, [accessToken]); // if user refresh too much
+    }, [user, accessToken]); // if user refresh too much
 
     /*async function extractPost(data) {
         let arr = [...data.Posts];
@@ -250,41 +252,53 @@ function Home() {
         setIsChatOpen(false);
     }
 
+    function markOnlineFriends(tid) {}
+
     return (
-        <div>
+        <div className="body-container">
             <Header />
-            <Friends
-                handleFriendMessageOnClick={(tid, fullname) =>
-                    handleFriendMessageOnClick(tid, fullname)
-                }
-            />
-            {user ? (
-                <Chat
-                    displayClass={isChatOpen ? 'active' : 'hidden'}
-                    uid={user._id}
-                    tid={messageTid}
-                    chattingWith={chattingWith}
-                    handleChatClosed={() => handleChatClose()}
-                    handleSocketSend={(rid, text) =>
-                        handleSocketSendMessage(rid, text)
-                    }
-                />
-            ) : (
-                <div></div>
-            )}
+            <div className="body">
+                <div className="body-left"></div>
+                <div className="body-middle">
+                    <NewPost
+                        handleNewSelfPost={(data) => handleNewSelfPost(data)}
+                        extractPost={extractPost}
+                        sortPosts={sortPosts}
+                        posts={posts}
+                    />
 
-            <NewPost
-                handleNewSelfPost={(data) => handleNewSelfPost(data)}
-                extractPost={extractPost}
-                sortPosts={sortPosts}
-                posts={posts}
-            />
-
-            <Posts
-                posts={posts}
-                handleDeletePost={(id) => handleDeletePost(id)}
-                handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
-            />
+                    <Posts
+                        posts={posts}
+                        handleDeletePost={(id) => handleDeletePost(id)}
+                        handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
+                    />
+                </div>
+                <div className="body-right">
+                    <Friends
+                        handleFriendMessageOnClick={(tid, fullname) =>
+                            handleFriendMessageOnClick(tid, fullname)
+                        }
+                        onlineUsers={onlineUsers}
+                        arrivalMessage={arrivalMessage}
+                    />
+                    {user ? (
+                        <Chat
+                            displayClass={isChatOpen ? 'active' : 'hidden'}
+                            uid={user._id}
+                            tid={messageTid}
+                            chattingWith={chattingWith}
+                            handleChatClosed={() => handleChatClose()}
+                            handleSocketSend={(rid, text) =>
+                                handleSocketSendMessage(rid, text)
+                            }
+                            arrivalMessage={arrivalMessage}
+                            isChatOpen={isChatOpen}
+                        />
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
+            </div>
             <Footer />
         </div>
     );

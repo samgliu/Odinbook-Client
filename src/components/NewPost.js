@@ -141,7 +141,7 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
                         value={state.content}
                         name="content"
                         rows="5"
-                        cols="60"
+                        cols="40"
                         placeholder="Enter content"
                         onChange={handleChange}
                         required

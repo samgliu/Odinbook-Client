@@ -1,3 +1,11 @@
+:root {
+    --textColor: #1c1e21;
+    --fontColor: rgb(101, 103, 107);
+    --FBlack: rgb(28, 30, 33);
+    --FBlue: rgb(27, 116, 228);
+    --background: #f2f3f5;
+    --FRed: #fa383e;
+}
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
         'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
@@ -49,4 +57,9 @@ img {
 }
 .clickable {
     cursor: pointer;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }

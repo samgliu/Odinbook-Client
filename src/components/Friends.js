@@ -4,9 +4,10 @@ import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 const { v4: uuidv4 } = require('uuid');
 
-function Friends({ handleFriendMessageOnClick }) {
+function Friends({ handleFriendMessageOnClick, onlineUsers }) {
     const [friendRequestList, setFriendRequestList] = useState(null);
     const [friendList, setFriendList] = useState(null);
+    const [onlineCounter, setOnlineCounter] = useState(null);
     const {
         user,
         setUser,
@@ -14,6 +15,7 @@ function Friends({ handleFriendMessageOnClick }) {
         setIsLoggedIn,
         accessToken,
         setAccessToken,
+        arrivalMessage,
     } = useContext(GlobalContext);
     const navigate = useNavigate();
     const accessHeader = {
@@ -29,7 +31,33 @@ function Friends({ handleFriendMessageOnClick }) {
         if (user && user.Friends) {
             setFriendList(user.Friends);
         }
-    }, [user, setFriendRequestList, setFriendList]);
+
+        async function checkOnlineUsers() {
+            let online = 0;
+            friendList.forEach((friend) => {
+                onlineUsers.forEach((user) => {
+                    console.log(String(friend._id));
+                    console.log(String(user.userId));
+                    if (String(friend._id) === String(user.userId)) {
+                        friend.isOnline = true;
+                        online = online + 1;
+                    }
+                });
+            });
+            setOnlineCounter(online);
+        }
+        if (friendList && onlineUsers) {
+            checkOnlineUsers();
+        }
+        //return () => setOnlineCounter(0);
+    }, [
+        user,
+        friendList,
+        onlineUsers.length,
+        setFriendRequestList,
+        setFriendList,
+        setOnlineCounter,
+    ]);
 
     function handleDeleteRequestLocal(tid) {
         const newList = friendRequestList.filter(
@@ -75,6 +103,21 @@ function Friends({ handleFriendMessageOnClick }) {
         handleFriendMessageOnClick(tid, fullname);
     }
 
+    useEffect(() => {
+        async function markNewMessageOnFriends(tid) {
+            let online = 0;
+            friendList.forEach((friend) => {
+                if (String(friend._id) === tid) {
+                    console.log(friend);
+                }
+            });
+            setOnlineCounter(online);
+        }
+        if (arrivalMessage && arrivalMessage.receiverId) {
+            markNewMessageOnFriends(arrivalMessage.receiverId);
+        }
+    }, [arrivalMessage]);
+
     return (
         <div>
             {user && friendRequestList && friendRequestList.length > 0 ? (
@@ -86,6 +129,7 @@ function Friends({ handleFriendMessageOnClick }) {
                                 <li key={uuidv4()}>
                                     <Link to={`${fr.Username}/profile`}>
                                         <img
+                                            className="avatar"
                                             src={
                                                 process.env.REACT_APP_API +
                                                 fr.Avatar
@@ -128,13 +172,17 @@ function Friends({ handleFriendMessageOnClick }) {
             <div>
                 {user && friendList && friendList.length > 0 ? (
                     <div>
-                        <h2>Contacts</h2>
+                        <h2>
+                            Contacts
+                            {onlineCounter ? ` (online: ${onlineCounter})` : ''}
+                        </h2>
                         <ul>
                             {friendList.map((fr) => {
                                 return (
                                     <li key={uuidv4()}>
                                         <Link to={`${fr.Username}/profile`}>
                                             <img
+                                                className="avatar"
                                                 src={
                                                     process.env.REACT_APP_API +
                                                     fr.Avatar
@@ -156,6 +204,10 @@ function Friends({ handleFriendMessageOnClick }) {
                                         >
                                             {fr.Firstname + ' '}
                                             {fr.Lastname + ' '}
+                                            {fr.isOnline
+                                                ? ' (online)'
+                                                : '(offline)'}
+                                            <p></p>
                                         </div>
                                     </li>
                                 );

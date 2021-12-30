@@ -131,6 +131,7 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                         {post.Author.Firstname} {post.Author.Lastname}
                     </h6>
                     <img
+                        className="avatar"
                         src={`${
                             process.env.REACT_APP_API + post.Author.Avatar
                         }`}

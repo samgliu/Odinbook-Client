@@ -2,6 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+import logo from '../images/logo.png';
+import '../style/Header.css';
 
 function Header() {
     const { user, setUser, isLoggedIn, setIsLoggedIn } =
@@ -23,14 +25,12 @@ function Header() {
     return (
         <header>
             <Link to="/">
-                <h1>OdinBook</h1>
+                <img src={logo} alt="" className="logo" />
             </Link>
+            <input type="text" placeholder="Search" />
             {isLoggedIn && user !== null ? (
                 <ul>
-                    <li>
-                        Welcome back {user.Firstname} {user.Lastname}
-                    </li>
-                    <li>
+                    <li className="header-cell">
                         <Link
                             to={{
                                 pathname: `/${user.Username}/profile`,
@@ -38,16 +38,26 @@ function Header() {
                                 state: { fromDashboard: false },
                             }}
                         >
-                            <p>Profile</p>
+                            <img
+                                src={process.env.REACT_APP_API + user.Avatar}
+                                alt=""
+                                className="avatar"
+                            />
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/" onClick={handleChat}>
-                            <p>Chat</p>
+                    <li className="header-cell">
+                        <Link
+                            to={{
+                                pathname: `/${user.Username}/profile`,
+
+                                state: { fromDashboard: false },
+                            }}
+                        >
+                            {user.Firstname}
                         </Link>
                     </li>
 
-                    <li>
+                    <li className="header-cell">
                         <Link to="/" onClick={handleLogOut}>
                             <p>Sign Out</p>
                         </Link>
@@ -55,12 +65,12 @@ function Header() {
                 </ul>
             ) : (
                 <ul>
-                    <li>
+                    <li className="header-cell">
                         <Link to="/signup">
                             <p>Sign Up</p>
                         </Link>
                     </li>
-                    <li>
+                    <li className="header-cell">
                         <Link to="/signin">
                             <p>Sign In</p>
                         </Link>

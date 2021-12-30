@@ -11,9 +11,12 @@ function Chat({
     handleChatClosed,
     handleSocketSend,
     displayClass,
+    arrivalMessage,
+    isChatOpen,
 }) {
     const [text, setText] = useState('');
     const [chatHistory, setChatHistory] = useState('');
+    const [room, setRoom] = useState(null);
     const [friendName, setFriendName] = useState('');
     const [roomId, setRoomId] = useState(null);
     const [targetId, setTargetId] = useState(null);
@@ -59,8 +62,9 @@ function Chat({
             );
 
             if (res.status === 200) {
-                setChatHistory(res.data);
-                setRoomId(res.room._id);
+                setChatHistory(res.data.history);
+                setRoom(res.data.room);
+                setRoomId(res.data.room._id);
             }
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
@@ -81,7 +85,10 @@ function Chat({
 
             if (res.status === 200) {
                 handleSocketSend(targetId, text);
-                console.log('msg sent');
+                // local sender processing
+                data._id = uuidv4();
+                data.Timestamp = new Date();
+                handleLocalSenderNewMessage(data);
             }
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
@@ -92,12 +99,43 @@ function Chat({
         e.preventDefault();
         handleChatClosed();
     }
+
+    async function handleLocalReceiverNewMessage(newMessage) {
+        setChatHistory([...chatHistory, newMessage]);
+    }
+
+    async function handleLocalSenderNewMessage(newMessage) {
+        setChatHistory([...chatHistory, newMessage]);
+    }
+
     useEffect(() => {
         // console.log('in useEffect', allRooms);
         if (displayClass === 'active' && uid && tid && accessToken) {
             fetchChatHistory(uid, tid);
         }
     }, [setChatHistory, uid, tid, setFriendName, displayClass]);
+
+    useEffect(() => {
+        // console.log('in useEffect', allRooms);
+        if (displayClass === 'active' && uid && tid && accessToken) {
+            fetchChatHistory(uid, tid);
+        }
+    }, [arrivalMessage]);
+
+    useEffect(() => {
+        if (arrivalMessage && isChatOpen) {
+            console.log(arrivalMessage);
+            const newMessage = {
+                _id: uuidv4(),
+                roomId: roomId,
+                Text: arrivalMessage.text,
+                SendBy: arrivalMessage.SendBy,
+                receiverId: arrivalMessage.receiverId,
+                Timestamp: arrivalMessage.Timestamp,
+            };
+            handleLocalReceiverNewMessage(newMessage);
+        }
+    }, [arrivalMessage]);
 
     return (
         <div className={displayClass}>
@@ -111,21 +149,21 @@ function Chat({
             </button>
             <div className="chatHistoryWrapper">
                 <div className="chatHistoryBox">
-                    {chatHistory && chatHistory.history ? (
+                    {chatHistory ? (
                         <div>
-                            {chatHistory.history.map((chat) => {
+                            {chatHistory.map((chat) => {
                                 return (
                                     <div
                                         key={chat._id}
                                         className={
-                                            chat.SendBy.Username ===
-                                            user.Username
+                                            String(chat.SendBy) ===
+                                            String(user._id)
                                                 ? 'rightchatItem'
                                                 : 'leftchatItem'
                                         }
                                     >
                                         <div className="chatItem">
-                                            <div>{chat.Text}</div>
+                                            <div>{chat.Text || chat.text}</div>
                                             <div className="chatTime">
                                                 {timeSince(chat.Timestamp) +
                                                     ' ago'}
