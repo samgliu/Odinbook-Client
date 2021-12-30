@@ -100,6 +100,7 @@ function SignIn() {
                     >
                         Log In
                     </button>
+                    <p>Test Account: test1@test1.com:123456</p>
                     <Link to="/signup">Create a new account</Link>
                 </form>
             </div>
