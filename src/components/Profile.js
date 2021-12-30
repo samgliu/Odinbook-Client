@@ -221,26 +221,29 @@ function Profile(props) {
     } */
     if (profileData) {
         return (
-            <div>
+            <div className="profile-body-container">
                 <Header />
-                <ProfileDetail
-                    profileData={profileData}
-                    profilePostsCounter={profilePostsCounter}
-                    isUserProfile={isUserProfile}
-                    isFriend={isFriend}
-                    handleSetIsFriend={(tf) => handleSetIsFriend(tf)}
-                    profileId={profileId}
-                />
-                <NewTargetPost
-                    username={username}
-                    profilePost={profilePost}
-                    handleNewTargetPost={(nd) => handleNewTargetPost(nd)}
-                />
-                <Posts
-                    posts={profilePost}
-                    handleDeletePost={(id) => handleDeletePost(id)}
-                    handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
-                />
+                <div className="profile">
+                    <ProfileDetail
+                        profileData={profileData}
+                        profilePostsCounter={profilePostsCounter}
+                        isUserProfile={isUserProfile}
+                        isFriend={isFriend}
+                        handleSetIsFriend={(tf) => handleSetIsFriend(tf)}
+                        profileId={profileId}
+                    />
+                    <NewTargetPost
+                        username={username}
+                        profilePost={profilePost}
+                        handleNewTargetPost={(nd) => handleNewTargetPost(nd)}
+                    />
+                    <Posts
+                        posts={profilePost}
+                        handleDeletePost={(id) => handleDeletePost(id)}
+                        handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
+                    />
+                </div>
+
                 <Footer />
             </div>
         );

@@ -7,6 +7,7 @@ import uploadApiClient from './upload-common';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import '../style/Profile.css';
 
 function ProfileDetail({
     profileData,
@@ -180,19 +181,17 @@ function ProfileDetail({
 
     if (profileData) {
         return (
-            <div>
+            <div className="profile-container">
                 {isEditing ? (
-                    <div>
+                    <div className="profile-form-container">
                         <form className="save-profile-form-container">
-                            <h3>Profile</h3>
+                            <h2>Profile Edit</h2>
                             {errors !== null ? (
                                 <div className="error">{errors}</div>
                             ) : (
                                 <div></div>
                             )}
-
                             <div className="form-group">
-                                <label>First name</label>
                                 <input
                                     type="text"
                                     defaultValue={profileData.Firstname}
@@ -200,10 +199,7 @@ function ProfileDetail({
                                     onChange={handleChange}
                                     required
                                 />
-                            </div>
 
-                            <div className="form-group">
-                                <label>Last name</label>
                                 <input
                                     type="text"
                                     defaultValue={profileData.Lastname}
@@ -214,7 +210,6 @@ function ProfileDetail({
                             </div>
 
                             <div className="form-group">
-                                <label>User name</label>
                                 <input
                                     type="text"
                                     defaultValue={profileData.Username}
@@ -225,7 +220,6 @@ function ProfileDetail({
                             </div>
 
                             <div className="form-group">
-                                <label>Email address</label>
                                 <input
                                     type="email"
                                     defaultValue={profileData.Email}
@@ -236,14 +230,12 @@ function ProfileDetail({
                             </div>
 
                             <div className="form-group">
-                                <label>Password</label>
                                 <input
                                     type="password"
                                     name="password"
                                     placeholder="Enter new password"
                                     onChange={handleChange}
                                 />
-                                <label>Confirm Password</label>
                                 <input
                                     type="password"
                                     name="confirm"
@@ -253,6 +245,7 @@ function ProfileDetail({
                             </div>
 
                             <button
+                                className="edit-button"
                                 type="submit"
                                 onClick={(e) => handleSubmitOnClick(e)}
                             >
@@ -262,38 +255,53 @@ function ProfileDetail({
                     </div>
                 ) : (
                     <div className="author-container">
-                        <Link to={`/${profileData.Username}/profile`}>
-                            <h6>
-                                {profileData.Firstname} {profileData.Lastname}
-                            </h6>
-                        </Link>
-                        <img
-                            src={
-                                ischangingavatar
-                                    ? previewimg
-                                    : `${process.env.REACT_APP_API + avatar}`
-                            }
-                            alt=""
-                            onClick={(e) => selectbtnonClick(e)}
-                        />
-                        <div>
-                            <input
-                                type="file"
-                                id="getavatarFile"
-                                onChange={(e) => onSelectChange(e)}
-                                style={{ display: 'none' }}
+                        <div className="profile-left">
+                            <img
+                                className="profile-img"
+                                src={
+                                    ischangingavatar
+                                        ? previewimg
+                                        : `${
+                                              process.env.REACT_APP_API + avatar
+                                          }`
+                                }
+                                alt=""
+                                onClick={(e) => selectbtnonClick(e)}
                             />
-                            {ischangingavatar ? (
-                                <div className="saveButton">
-                                    <button
-                                        onClick={(e) => onsavebtnOnclicked(e)}
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            ) : (
-                                <div></div>
-                            )}
+                            <div>
+                                <input
+                                    type="file"
+                                    id="getavatarFile"
+                                    onChange={(e) => onSelectChange(e)}
+                                    style={{ display: 'none' }}
+                                />
+                                {ischangingavatar ? (
+                                    <div>
+                                        <button
+                                            className="edit-button"
+                                            onClick={(e) =>
+                                                onsavebtnOnclicked(e)
+                                            }
+                                        >
+                                            Save
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div> </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="profile-right">
+                            <Link to={`/${profileData.Username}/profile`}>
+                                <h1>
+                                    {profileData.Firstname}{' '}
+                                    {profileData.Lastname}
+                                </h1>
+                            </Link>
+                            <div className="posts-counter">
+                                <p>@{profileData.Username}</p>
+                                <p>Posts: {profilePostsCounter}</p>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -303,12 +311,14 @@ function ProfileDetail({
                         <div>
                             {!isEditing ? (
                                 <button
+                                    className="edit-button"
                                     onClick={(e) => handleEditProfileOnClick(e)}
                                 >
                                     Edit Profile
                                 </button>
                             ) : (
                                 <button
+                                    className="cancel-button profile-cancel-button"
                                     onClick={(e) => handleEditProfileOnClick(e)}
                                 >
                                     Cancel
@@ -316,25 +326,25 @@ function ProfileDetail({
                             )}
                         </div>
                     ) : isFriend ? (
-                        <button onClick={(e) => handleUnfriendOnClick(e)}>
+                        <button
+                            className="edit-button"
+                            onClick={(e) => handleUnfriendOnClick(e)}
+                        >
                             Unfriend
                         </button>
                     ) : (
-                        <button onClick={(e) => handleSendFriendOnClick(e)}>
+                        <button
+                            className="edit-button"
+                            onClick={(e) => handleSendFriendOnClick(e)}
+                        >
                             Send friend request
                         </button>
                     )}
                 </div>
-                <div>
-                    <p>
-                        Posts:
-                        {profilePostsCounter}
-                    </p>
-                </div>
             </div>
         );
     } else {
-        return <div></div>;
+        return <div>Loading</div>;
     }
 }
 export default ProfileDetail;

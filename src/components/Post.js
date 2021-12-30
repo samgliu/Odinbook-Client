@@ -6,6 +6,8 @@ import Comments from './Comments';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+import thumbIcon from '../images/thumb.svg';
+import commentIcon from '../images/comment.svg';
 
 function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
     const navigate = useNavigate();
@@ -125,29 +127,40 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
 
     return (
         <div className="post-container" id={post._id}>
-            <div className="author-container">
-                <Link to={`/${post.Author.Username}/profile`}>
-                    <h6>
-                        {post.Author.Firstname} {post.Author.Lastname}
-                    </h6>
-                    <img
-                        className="avatar"
-                        src={`${
-                            process.env.REACT_APP_API + post.Author.Avatar
-                        }`}
-                        alt=""
+            <div className="post-header-container">
+                <div className="post-header-left">
+                    <Link to={`/${post.Author.Username}/profile`}>
+                        <img
+                            className="avatar"
+                            src={`${
+                                process.env.REACT_APP_API + post.Author.Avatar
+                            }`}
+                            alt=""
+                        />
+                    </Link>
+                    <div>
+                        <Link to={`/${post.Author.Username}/profile`}>
+                            <h6>
+                                {post.Author.Firstname} {post.Author.Lastname}
+                            </h6>
+                        </Link>
+                        <p>
+                            {new Date(post.Timestamp)
+                                .toDateString()
+                                .substring(4, 10)}
+                        </p>
+                    </div>
+                </div>
+                <div className="post-header-right">
+                    <PostDropdownButton
+                        handleDropdownOnClick={() => handleDropdown()}
+                        handleDeleteOnClick={() => handleDeleteOnClick()}
+                        hasAuth={hasAuth}
                     />
-                </Link>
-                <p>{post.Timestamp.substring(0, 10)}</p>
-
-                <PostDropdownButton
-                    handleDropdownOnClick={() => handleDropdown()}
-                    handleDeleteOnClick={() => handleDeleteOnClick()}
-                    hasAuth={hasAuth}
-                />
+                </div>
             </div>
-            <div className="post-header">
-                <div>
+            <div className="post-container">
+                <div className="post-image-container">
                     {post.Picture ? (
                         <img
                             src={process.env.REACT_APP_API + post.Picture}
@@ -157,29 +170,37 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                     ) : (
                         <div></div>
                     )}
-
-                    <p className="content-preview">{post.Content}</p>
                 </div>
-
-                <div>
-                    <p>Likes: {likesCounter}</p>
-                    <p>Comments: {commentsCounter}</p>
-                </div>
-                <div>
-                    {isLiked ? (
-                        <button onClick={(e) => handleUnlikeOnClick(e)}>
-                            Unlike
+                <p className="content-preview">{post.Content}</p>
+                <div className="like-comment-counter">
+                    <div>
+                        {isLiked ? (
+                            <button onClick={(e) => handleUnlikeOnClick(e)}>
+                                <img
+                                    src={thumbIcon}
+                                    alt=""
+                                    className="blue-background"
+                                />
+                            </button>
+                        ) : (
+                            <button onClick={(e) => handleLikeOnClick(e)}>
+                                <img
+                                    src={thumbIcon}
+                                    alt=""
+                                    className="gray-background"
+                                />
+                            </button>
+                        )}
+                        <p> {likesCounter}</p>
+                    </div>
+                    <div>
+                        <button onClick={(e) => handleCommentOpenClick(e)}>
+                            <img src={commentIcon} alt="" />
                         </button>
-                    ) : (
-                        <button onClick={(e) => handleLikeOnClick(e)}>
-                            Like
-                        </button>
-                    )}
-
-                    <button onClick={(e) => handleCommentOpenClick(e)}>
-                        Comment
-                    </button>
+                        <p> {commentsCounter}</p>
+                    </div>
                 </div>
+
                 {isCommentOpen ? (
                     <Comments
                         comments={comments}
@@ -191,7 +212,7 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                 ) : (
                     <div></div>
                 )}
-                <div>
+                <div className="newComment-container">
                     <NewComment
                         handleNewTargetComment={(nc) =>
                             handleNewTargetComment(nc)

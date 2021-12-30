@@ -258,7 +258,6 @@ function Home() {
         <div className="body-container">
             <Header />
             <div className="body">
-                <div className="body-left"></div>
                 <div className="body-middle">
                     <NewPost
                         handleNewSelfPost={(data) => handleNewSelfPost(data)}

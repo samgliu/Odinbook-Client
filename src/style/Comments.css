@@ -1,0 +1,61 @@
+.newComment-container {
+    display: flex;
+    flex-direction: column;
+}
+.newcomment-form-group {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    padding: 0.5em;
+}
+
+.newcomment-form-group input {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--background);
+    font-size: 1.1em;
+    padding: 0.5em;
+    width: 90%;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 650px;
+    gap: 0.5em;
+}
+
+.comment-detail {
+    padding: 0.5em 0.5em 0.5em 4em;
+}
+.comment-content-preview {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.comment-like-icon-container {
+    width: 100px;
+    height: 25px;
+    display: flex;
+    overflow: hidden;
+}
+.comment-text-container {
+    display: flex;
+}
+.like-in-comments-counter {
+    width: 100px;
+    padding: 0.25em 0 0.25em 0;
+    display: flex;
+    overflow: hidden;
+}
+
+.like-in-comments-counter button {
+    background-color: transparent;
+    border: none;
+}
+.like-in-comments-counter img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}

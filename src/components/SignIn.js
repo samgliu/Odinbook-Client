@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from './Header';
 import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+import logo from '../images/logo.png';
 
 function SignIn() {
     const { setUser, setIsLoggedIn, accessToken, setAccessToken } =
@@ -60,42 +61,48 @@ function SignIn() {
         }
     }
     return (
-        <div>
-            <Header />
-            <form className="sign-in-form-container" method="Post">
-                <h3>Sign In</h3>
-                {errors !== null ? (
-                    <div className="error">{errors}</div>
-                ) : (
-                    <div></div>
-                )}
-
-                <div className="form-group">
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="signup">
+            <div className="signupcontainer">
+                <div>
+                    <img src={logo} alt="" />
                 </div>
+                <h1>Log In</h1>
+                <form className="sigupform" method="Post">
+                    {errors !== null ? (
+                        <div className="error">{errors}</div>
+                    ) : (
+                        <div></div>
+                    )}
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Enter password"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <div className="form-group">
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-                <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Sign In
-                </button>
-            </form>
+                    <div className="form-group">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        onClick={(e) => handleSubmitOnClick(e)}
+                    >
+                        Log In
+                    </button>
+                    <Link to="/signup">Create a new account</Link>
+                </form>
+            </div>
         </div>
     );
 }

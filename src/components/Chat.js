@@ -88,6 +88,7 @@ function Chat({
                 // local sender processing
                 data._id = uuidv4();
                 data.Timestamp = new Date();
+                data.SendBy = user._id;
                 handleLocalSenderNewMessage(data);
             }
         } catch (err) {
@@ -139,68 +140,78 @@ function Chat({
 
     return (
         <div className={displayClass}>
-            <div>Chatting with {chattingWith}</div>
-            <button
-                onClick={(e) => {
-                    handleChatClose(e);
-                }}
-            >
-                Close
-            </button>
-            <div className="chatHistoryWrapper">
-                <div className="chatHistoryBox">
-                    {chatHistory ? (
-                        <div>
-                            {chatHistory.map((chat) => {
-                                return (
-                                    <div
-                                        key={chat._id}
-                                        className={
-                                            String(chat.SendBy) ===
-                                            String(user._id)
-                                                ? 'rightchatItem'
-                                                : 'leftchatItem'
-                                        }
-                                    >
-                                        <div className="chatItem">
-                                            <div>{chat.Text || chat.text}</div>
-                                            <div className="chatTime">
-                                                {timeSince(chat.Timestamp) +
-                                                    ' ago'}
+            <div className="chat-container">
+                <div className="chat-header">
+                    <p>
+                        Chatting with <strong>{chattingWith}</strong>
+                    </p>
+                    <button
+                        onClick={(e) => {
+                            handleChatClose(e);
+                        }}
+                        className="X-button"
+                    >
+                        ✖
+                    </button>
+                </div>
+
+                <div className="chatHistoryWrapper">
+                    <div className="chatHistoryBox">
+                        {chatHistory ? (
+                            <div>
+                                {chatHistory.map((chat) => {
+                                    return (
+                                        <div
+                                            key={chat._id}
+                                            className={
+                                                String(chat.SendBy) ===
+                                                String(user._id)
+                                                    ? 'rightchatItem'
+                                                    : 'leftchatItem'
+                                            }
+                                        >
+                                            <div className="chatItem">
+                                                <div>
+                                                    {chat.Text || chat.text}
+                                                </div>
+                                                <div className="chatTime">
+                                                    {timeSince(chat.Timestamp) +
+                                                        ' ago'}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
-                </div>
-                <div className="msgSendBox">
-                    <input
-                        type="text"
-                        placeholder="Message..."
-                        onChange={(e) => {
-                            setText(e.target.value);
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.code === 'Enter') {
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div></div>
+                        )}
+                    </div>
+                    <div className="msgSendBox">
+                        <input
+                            type="text"
+                            placeholder="Message..."
+                            onChange={(e) => {
+                                setText(e.target.value);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.code === 'Enter') {
+                                    e.preventDefault();
+                                    sendMessage();
+                                    e.target.value = '';
+                                }
+                            }}
+                        />
+                        <div
+                            className="clickable newpost-button"
+                            onClick={(e) => {
+                                e.target.parentNode.firstChild.value = '';
                                 e.preventDefault();
                                 sendMessage();
-                                e.target.value = '';
-                            }
-                        }}
-                    />
-                    <div
-                        className="clickable"
-                        onClick={(e) => {
-                            e.target.parentNode.firstChild.value = '';
-                            e.preventDefault();
-                            sendMessage();
-                        }}
-                    >
-                        Send
+                            }}
+                        >
+                            Send
+                        </div>
                     </div>
                 </div>
             </div>

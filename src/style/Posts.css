@@ -1,0 +1,213 @@
+/* create-post-container */
+.create-post-container {
+    max-width: 650px;
+    width: 75vw;
+    background-color: white;
+    border-radius: 0.5em;
+    box-shadow: var(--bodyShadow);
+}
+.create-post-container h3 {
+    text-align: center;
+    padding: 0.8em 0 0.8em 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5em;
+    color: var(--textColor);
+    font-weight: 800;
+    font-size: 1.4em;
+}
+.create-post-container textarea {
+    width: 90%;
+    max-width: 600px;
+    border: none;
+    border-radius: 0.5em;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 8px;
+    padding: 1em;
+    font-size: 1.1em;
+}
+.create-post-container .form-group {
+    width: 75vw;
+    max-width: 650px;
+    padding: 0em 1em 0 1em;
+}
+/* new post */
+.newpost-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+}
+.icon-button {
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin: 1px;
+    display: flex;
+    align-items: center;
+}
+.icon {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+}
+.newpost-buttons-container {
+    padding: 0 1em 0.5em 0;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5em;
+    align-items: center;
+    justify-content: flex-end;
+}
+.newpost-button {
+    background-color: var(--FBlue);
+    color: white;
+    font-size: 1.2em;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    border-radius: 0.25em;
+    border: none;
+}
+.cancel-button {
+    background-color: var(--FRed);
+    color: white;
+    font-size: 1.2em;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    border-radius: 0.25em;
+    border: none;
+}
+.newpost-button:hover {
+    background-color: var(--FHBlue);
+}
+.preview-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.preview-wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5em;
+    height: auto;
+}
+
+.posts-container {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.post-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    gap: 0.5em;
+    box-shadow: var(--bodyShadow);
+    border-radius: 0.5em;
+}
+.post-header-container {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-header-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.post-header-left h6 {
+    font-size: 1em;
+}
+.post-header-left p {
+    font-size: 0.7em;
+}
+
+.dropdownBtnWrapper .threePtButton {
+    cursor: pointer;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    margin-bottom: 4px;
+    padding: 0.5em;
+}
+.dropdownBtnWrapper .threePtButton:hover {
+    border-radius: 0.5em;
+    box-shadow: var(--bodyShadow);
+}
+.dropdownBtnWrapper .deleteButton {
+    background-color: var(--FRed);
+    color: white;
+    font-size: 0.9em;
+    border-radius: 0.25em;
+    border: none;
+}
+
+.dropdownBtnWrapper {
+    margin-top: 10px;
+    position: relative;
+}
+.dropdownBtnWrapper div {
+    right: 0px;
+    position: absolute;
+    width: 100px;
+}
+.dropdownBtnWrapper div button {
+    padding: 5px 10px 5px 10px;
+    width: 100px;
+    background-color: white;
+    border: 1px solid #c4c2c2;
+    border-radius: 5px;
+}
+
+.post-image-container {
+    max-width: 95%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-image-container img {
+    width: 99%;
+    max-width: 650px;
+    height: auto;
+    border-radius: 0.5em;
+}
+
+.content-preview {
+    padding: 0 0 0 1.1em;
+    font-size: 1.1em;
+}
+.like-comment-counter {
+    padding: 0.25em 0 0.25em 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.like-comment-counter > div {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+}
+.like-comment-counter button {
+    background-color: transparent;
+    border: none;
+}
+.like-comment-counter img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}

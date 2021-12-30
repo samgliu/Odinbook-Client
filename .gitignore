@@ -25,3 +25,5 @@ yarn-error.log*
 *.swp
 .env
 .env*.local
+
+*Zone.Identifier

@@ -4,6 +4,7 @@ import CommentDropdownButton from './CommentDropdownButton';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+import thumbIcon from '../images/thumb.svg';
 
 function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
     const [hasAuth, setHasAuth] = useState(false);
@@ -68,53 +69,80 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
 
     return (
         <div className="comment-container" id={comment._id}>
-            <div className="author-container">
-                <Link to={`/${comment.Author.Username}/profile`}>
-                    <h6>
-                        {comment.Author.Firstname} {comment.Author.Lastname}
-                    </h6>
-                    <img
-                        className="avatar"
-                        src={`${
-                            process.env.REACT_APP_API + comment.Author.Avatar
-                        }`}
-                        alt=""
-                    />
-                </Link>
-                <p>{comment.Timestamp.substring(0, 10)}</p>
-                <div>
-                    <p>Likes: {likesCounter}</p>
-                    {isLiked ? (
-                        <button onClick={(e) => handleUnlikeOnClick(e)}>
-                            Unlike
-                        </button>
-                    ) : (
-                        <button onClick={(e) => handleLikeOnClick(e)}>
-                            Like
-                        </button>
-                    )}
-                </div>
-
-                <div className="comment-detail">
+            <div className="post-header-container">
+                <div className="post-header-left">
+                    <Link to={`/${comment.Author.Username}/profile`}>
+                        <img
+                            className="avatar"
+                            src={`${
+                                process.env.REACT_APP_API +
+                                comment.Author.Avatar
+                            }`}
+                            alt=""
+                        />
+                    </Link>
                     <div>
-                        {comment.Picture ? (
-                            <img
-                                src={
-                                    process.env.REACT_APP_API + comment.Picture
-                                }
-                                alt=""
-                                className="picture"
-                            />
-                        ) : (
-                            <div></div>
-                        )}
-                        <p>{comment.Content}</p>
+                        <Link to={`/${comment.Author.Username}/profile`}>
+                            <h6>
+                                {comment.Author.Firstname}{' '}
+                                {comment.Author.Lastname}
+                            </h6>
+                        </Link>
+                        <p>
+                            {new Date(comment.Timestamp)
+                                .toDateString()
+                                .substring(4, 15)}
+                        </p>
                     </div>
-
+                </div>
+                <div className="post-header-right">
                     <CommentDropdownButton
                         handleDelete={() => handleDeleteOnClick()}
                         hasAuth={hasAuth}
                     />
+                </div>
+            </div>
+            <div className="comment-detail">
+                <div>
+                    {comment.Picture ? (
+                        <img
+                            src={process.env.REACT_APP_API + comment.Picture}
+                            alt=""
+                            className="picture"
+                        />
+                    ) : (
+                        <div></div>
+                    )}
+                    <div className="comment-text-container">
+                        {comment.Content}
+                        <span className="comment-like-icon-container">
+                            <div className="like-in-comments-counter">
+                                {isLiked ? (
+                                    <button
+                                        onClick={(e) => handleUnlikeOnClick(e)}
+                                    >
+                                        <img
+                                            src={thumbIcon}
+                                            alt=""
+                                            className="blue-background"
+                                        />
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={(e) => handleLikeOnClick(e)}
+                                    >
+                                        {' '}
+                                        <img
+                                            src={thumbIcon}
+                                            alt=""
+                                            className="gray-background"
+                                        />
+                                    </button>
+                                )}
+                                <p>{likesCounter}</p>
+                            </div>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

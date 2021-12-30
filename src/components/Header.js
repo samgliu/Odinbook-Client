@@ -27,7 +27,7 @@ function Header() {
             <Link to="/">
                 <img src={logo} alt="" className="logo" />
             </Link>
-            <input type="text" placeholder="Search" />
+            <input className="searchBox" type="text" placeholder="Search" />
             {isLoggedIn && user !== null ? (
                 <ul>
                     <li className="header-cell">

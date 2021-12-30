@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
+import '../style/Friends.css';
 const { v4: uuidv4 } = require('uuid');
 
 function Friends({ handleFriendMessageOnClick, onlineUsers }) {
@@ -121,9 +122,9 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
     return (
         <div>
             {user && friendRequestList && friendRequestList.length > 0 ? (
-                <div>
+                <div className="friends-container">
                     <h2>New Friends</h2>
-                    <ul>
+                    <ul className="friends-list">
                         {friendRequestList.map((fr) => {
                             return (
                                 <li key={uuidv4()}>
@@ -137,25 +138,25 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
                                             alt=""
                                         />
                                     </Link>
-                                    <div>
+                                    <Link to={`${fr.Username}/profile`}>
                                         {fr.Firstname + ' '}
                                         {fr.Lastname + ' '}
-                                    </div>
+                                    </Link>
                                     <div>
                                         {/*FIXME add link or params to accept*/}
                                         <span
                                             onClick={(e) =>
                                                 handleAcceptFriend(e, fr._id)
                                             }
-                                            className="clickable"
+                                            className="clickable blue"
                                         >
-                                            Accept
-                                        </span>{' '}
+                                            Accept{'  '}
+                                        </span>
                                         <span
                                             onClick={(e) =>
                                                 handleRejectFriend(e, fr._id)
                                             }
-                                            className="clickable"
+                                            className="clickable blue"
                                         >
                                             Reject
                                         </span>
@@ -171,12 +172,12 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
 
             <div>
                 {user && friendList && friendList.length > 0 ? (
-                    <div>
+                    <div className="friends-container">
                         <h2>
                             Contacts
                             {onlineCounter ? ` (online: ${onlineCounter})` : ''}
                         </h2>
-                        <ul>
+                        <ul className="friends-list">
                             {friendList.map((fr) => {
                                 return (
                                     <li key={uuidv4()}>
@@ -189,6 +190,11 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
                                                 }
                                                 alt=""
                                             />
+                                            {fr.isOnline ? (
+                                                <span className="green-dot"></span>
+                                            ) : (
+                                                ''
+                                            )}
                                         </Link>
                                         <div
                                             className="clickable"
@@ -204,10 +210,6 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
                                         >
                                             {fr.Firstname + ' '}
                                             {fr.Lastname + ' '}
-                                            {fr.isOnline
-                                                ? ' (online)'
-                                                : '(offline)'}
-                                            <p></p>
                                         </div>
                                     </li>
                                 );

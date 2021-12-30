@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
+import selectPicture from '../images/selectPicture.svg';
 
 function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     const [errors, setErrors] = useState(null);
@@ -34,6 +35,8 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
         //console.log(state);
         if (state.content === '') {
             setErrors('Some field is empty!');
+        } else if (state.content.length > 1000) {
+            setErrors('Send post within 1000 characters!');
         } else {
             setErrors(null);
             return true;
@@ -123,9 +126,9 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
         //setIschangingavatar(false);
     }
     return (
-        <div>
+        <div className="create-post-container">
             <form className="newpost-form-container">
-                <h3>New Post</h3>
+                <h3>Create New Post</h3>
                 {errors !== null ? (
                     <div className="error">{errors}</div>
                 ) : (
@@ -138,13 +141,12 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
                         value={state.content}
                         name="content"
                         rows="5"
-                        cols="60"
                         placeholder="Enter content"
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div>
+                <div className="preview-wrapper">
                     <input
                         type="file"
                         id="getPostPictureFile"
@@ -163,22 +165,32 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
                         <div></div>
                     )}
                 </div>
-
-                {isUploadingPicture ? (
+                <div className="newpost-buttons-container">
+                    {isUploadingPicture ? (
+                        <button
+                            className="cancel-button"
+                            type="submit"
+                            onClick={(e) => cancelUploadOnClick(e)}
+                        >
+                            Cancel
+                        </button>
+                    ) : (
+                        <button
+                            className="icon-button"
+                            type="submit"
+                            onClick={(e) => selectbtnonClick(e)}
+                        >
+                            <img className="icon" src={selectPicture} alt="" />
+                        </button>
+                    )}
                     <button
+                        className="newpost-button"
                         type="submit"
-                        onClick={(e) => cancelUploadOnClick(e)}
+                        onClick={(e) => handleSubmitOnClick(e)}
                     >
-                        Cancel
+                        Send Post
                     </button>
-                ) : (
-                    <button type="submit" onClick={(e) => selectbtnonClick(e)}>
-                        Select Picture
-                    </button>
-                )}
-                <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Send Post
-                </button>
+                </div>
             </form>
         </div>
     );

@@ -3,6 +3,7 @@ import Comment from './Comment';
 import apiClient from './http-common';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import '../style/Comments.css';
 
 function Comments({
     comments,

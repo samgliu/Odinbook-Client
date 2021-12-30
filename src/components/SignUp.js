@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { useState } from 'react';
 import apiClient from './http-common';
+import logo from '../images/logo.png';
+import '../style/SignUp.css';
 
 function SignUp() {
     const [errors, setErrors] = useState(null);
@@ -64,83 +66,92 @@ function SignUp() {
     }
 
     return (
-        <div>
-            <Header />
-            <form className="sign-up-form-container">
-                <h3>Sign Up</h3>
-                {errors !== null ? (
-                    <div className="error">{errors}</div>
-                ) : (
-                    <div></div>
-                )}
-
-                <div className="form-group">
-                    <label>First name</label>
-                    <input
-                        type="text"
-                        placeholder="First name"
-                        name="firstname"
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="signup">
+            <div className="signupcontainer">
+                <div>
+                    <img src={logo} alt="" />
                 </div>
+                <h1>Create a new account</h1>
+                <form className="sigupform">
+                    {errors !== null ? (
+                        <div className="error">{errors}</div>
+                    ) : (
+                        <div></div>
+                    )}
+                    <div className="form-group signup-name">
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="First name"
+                                name="firstname"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
-                <div className="form-group">
-                    <label>Last name</label>
-                    <input
-                        type="text"
-                        placeholder="Last name"
-                        name="lastname"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Last name"
+                                name="lastname"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </div>
 
-                <div className="form-group">
-                    <label>User name</label>
-                    <input
-                        type="text"
-                        placeholder="User name"
-                        name="username"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="User name"
+                            name="username"
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input
-                        type="email"
-                        placeholder="Enter email"
-                        name="email"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <div className="form-group">
+                        <input
+                            type="email"
+                            placeholder="Enter email"
+                            name="email"
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group signup-name">
+                        <div>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Enter password"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="password"
+                                name="confirm"
+                                placeholder="Confirm password"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </div>
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Enter password"
-                        onChange={handleChange}
-                        required
-                    />
-                    <label>Confirm Password</label>
-                    <input
-                        type="password"
-                        name="confirm"
-                        placeholder="Confirm password"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Sign Up
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        onClick={(e) => handleSubmitOnClick(e)}
+                    >
+                        Sign Up
+                    </button>
+                    <Link to="/signin">
+                        Already have an account? Or choose a test account at
+                        sign in page.
+                    </Link>
+                </form>
+            </div>
         </div>
     );
 }

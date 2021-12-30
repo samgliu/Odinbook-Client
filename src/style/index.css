@@ -3,25 +3,21 @@
     --fontColor: rgb(101, 103, 107);
     --FBlack: rgb(28, 30, 33);
     --FBlue: rgb(27, 116, 228);
+    --FHBlue: rgb(7, 103, 221);
     --background: #f2f3f5;
-    --FRed: #fa383e;
+    --FRed: #bb2429;
+    --bodyShadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
 }
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI Historic', 'Segoe UI', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
 }
 
 /* reset */
 body,
 h1,
+h3,
 h4,
 h6,
 p,
@@ -43,10 +39,15 @@ button {
 img {
     width: 50px;
     height: 50px;
+    max-width: 650px;
 }
 .picture {
     width: 200px;
     height: 200px;
+}
+textarea {
+    resize: none;
+    font-family: 'Segoe UI Historic', 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 /* model */
 .active {
@@ -62,4 +63,51 @@ img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+}
+.blue-background {
+    background-color: var(--FBlue);
+}
+.gray-background {
+    background-color: var(--background);
+}
+.error {
+    padding-left: 4em;
+    padding-right: 1em;
+    color: red;
+    font-weight: 600;
+}
+.green-dot {
+    display: relative;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(49, 162, 76);
+    border-radius: 50%;
+    border: 2px solid white;
+    display: inline-block;
+}
+.red-dot {
+    display: relative;
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    background-color: var(--FRed);
+    border-radius: 50%;
+    display: inline-block;
+}
+.blue {
+    color: var(--FBlue);
+    font-size: 0.8em;
+    font-weight: 800;
+}
+.X-button {
+    background-color: transparent;
+    color: var(--FBlue);
+    border: none;
+    font-weight: 900;
+    font-size: 1em;
+    border-radius: 0.25em;
+}
+.X-button:hover {
+    background-color: var(--background);
 }

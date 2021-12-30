@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
+import selectPicture from '../images/selectPicture.svg';
 
 function NewComment({ comments, handleNewTargetComment, postId }) {
     const [errors, setErrors] = useState(null);
@@ -32,6 +33,8 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
         //console.log(state);
         if (state.content === '') {
             setErrors('Some field is empty!');
+        } else if (state.content.length > 250) {
+            setErrors('Send comment within 250 characters!');
         } else {
             setErrors(null);
             return true;
@@ -53,7 +56,7 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
                 await newCommentPostData(state);
             }
         } else {
-            console.log(state);
+            //console.log(state);
         }
     }
     async function newCommentPostData(data) {
@@ -133,24 +136,33 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
 
     return (
         <div>
-            <form className="newpost-form-container">
+            <form className="newcomment-form-container">
                 {errors !== null ? (
                     <div className="error">{errors}</div>
                 ) : (
                     <div></div>
                 )}
 
-                <div className="form-group">
+                <div className="newcomment-form-group">
+                    {user ? (
+                        <img
+                            className="avatar"
+                            src={`${process.env.REACT_APP_API + user.Avatar}`}
+                            alt=""
+                        />
+                    ) : (
+                        <div></div>
+                    )}
                     <input
                         type="text"
                         value={state.content}
                         name="content"
-                        placeholder="Comment..."
+                        placeholder="Write a comment..."
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div>
+                <div className="preview-wrapper">
                     <input
                         type="file"
                         id={`new-comment-${postId}`}
@@ -169,21 +181,32 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
                         <div></div>
                     )}
                 </div>
-                {isUploadingPicture ? (
+                <div className="newpost-buttons-container">
+                    {isUploadingPicture ? (
+                        <button
+                            type="button"
+                            className="cancel-button"
+                            onClick={(e) => cancelUploadOnClick(e)}
+                        >
+                            Cancel
+                        </button>
+                    ) : (
+                        <button
+                            className="icon-button"
+                            type="button"
+                            onClick={(e) => selectbtnonClick(e)}
+                        >
+                            <img className="icon" src={selectPicture} alt="" />
+                        </button>
+                    )}
                     <button
+                        className="newpost-button"
                         type="submit"
-                        onClick={(e) => cancelUploadOnClick(e)}
+                        onClick={(e) => handleSubmitOnClick(e)}
                     >
-                        Cancel
+                        Comment
                     </button>
-                ) : (
-                    <button type="submit" onClick={(e) => selectbtnonClick(e)}>
-                        Select Picture
-                    </button>
-                )}
-                <button type="submit" onClick={(e) => handleSubmitOnClick(e)}>
-                    Send Comment
-                </button>
+                </div>
             </form>
         </div>
     );
