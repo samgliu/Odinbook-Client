@@ -39,7 +39,13 @@ function Home() {
 
     // this hook to let the socket only call once
     useEffect(() => {
-        socket.current = io(process.env.REACT_APP_SOCKET);
+        //socket.current = io(process.env.REACT_APP_SOCKET, {
+        socket.current = io('http://172.19.175.170:5000/', {
+            extraHeaders: {
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
+            },
+            //withCredentials: true,
+        });
         socket.current.on('getMessage', (data) => {
             console.log(data);
 
