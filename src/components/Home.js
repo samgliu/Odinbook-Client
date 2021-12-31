@@ -39,10 +39,10 @@ function Home() {
 
     // this hook to let the socket only call once
     useEffect(() => {
-        //socket.current = io(process.env.REACT_APP_SOCKET, {
-        socket.current = io('http://172.19.175.170:5000/', {
+        socket.current = io(process.env.REACT_APP_SOCKET, {
+            //socket.current = io('nameless-harbor-96114.herokuapp.com', {
             extraHeaders: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                //'Access-Control-Allow-Origin': 'http://localhost:3000 ',
             },
             //withCredentials: true,
         });
@@ -69,7 +69,7 @@ function Home() {
     useEffect(() => {
         isMounted.current = true;
         if (user && socket && socket.current && socket.current.id) {
-            console.log('socket.id: ' + socket.current.id);
+            //console.log('socket.id: ' + socket.current.id);
             socket.current.emit('addUser', user._id);
             socket.current.on('getUsers', (users) => {
                 console.log(users);

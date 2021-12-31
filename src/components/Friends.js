@@ -37,8 +37,8 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
             let online = 0;
             friendList.forEach((friend) => {
                 onlineUsers.forEach((user) => {
-                    console.log(String(friend._id));
-                    console.log(String(user.userId));
+                    //console.log(String(friend._id));
+                    //console.log(String(user.userId));
                     if (String(friend._id) === String(user.userId)) {
                         friend.isOnline = true;
                         online = online + 1;
