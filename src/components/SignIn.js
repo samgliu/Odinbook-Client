@@ -43,19 +43,30 @@ function SignIn() {
         try {
             const url = `/signin`;
             const data = JSON.stringify(state);
-            const res = apiClient.post(url, data).then((response) => {
-                const userData = response.data.user;
-                if (response.data.accessToken && response.data.refreshToken) {
-                    const token = response.data.accessToken;
-                    const refresh = response.data.refreshToken;
-                    setAccessToken(token);
-                    setIsLoggedIn(true);
-                    setUser(userData);
-                    localStorage.setItem('bookUser', JSON.stringify(userData));
-                    sessionStorage.setItem('rt', refresh);
-                }
-                navigate('/');
-            });
+            const res = apiClient
+                .post(url, data)
+                .then((response) => {
+                    const userData = response.data.user;
+                    if (
+                        response.data.accessToken &&
+                        response.data.refreshToken
+                    ) {
+                        const token = response.data.accessToken;
+                        const refresh = response.data.refreshToken;
+                        setAccessToken(token);
+                        setIsLoggedIn(true);
+                        setUser(userData);
+                        localStorage.setItem(
+                            'bookUser',
+                            JSON.stringify(userData)
+                        );
+                        sessionStorage.setItem('rt', refresh);
+                    }
+                    navigate('/');
+                })
+                .catch((err) => {
+                    setErrors('Invalid username or password!');
+                });
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
