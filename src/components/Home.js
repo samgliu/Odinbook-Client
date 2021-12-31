@@ -47,7 +47,7 @@ function Home() {
             //withCredentials: true,
         });
         socket.current.on('getMessage', (data) => {
-            console.log(data);
+            //console.log(data);
 
             //if (user._id === data.receiverId) {
             setArrivalMessage({
@@ -285,6 +285,7 @@ function Home() {
                         }
                         onlineUsers={onlineUsers}
                         arrivalMessage={arrivalMessage}
+                        isChatOpen={isChatOpen}
                     />
                     {user ? (
                         <Chat

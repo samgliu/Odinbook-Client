@@ -3,9 +3,15 @@ import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import '../style/Friends.css';
+import Friend from './Friend';
 const { v4: uuidv4 } = require('uuid');
 
-function Friends({ handleFriendMessageOnClick, onlineUsers }) {
+function Friends({
+    arrivalMessage,
+    handleFriendMessageOnClick,
+    onlineUsers,
+    isChatOpen,
+}) {
     const [friendRequestList, setFriendRequestList] = useState(null);
     const [friendList, setFriendList] = useState(null);
     const [onlineCounter, setOnlineCounter] = useState(null);
@@ -16,7 +22,6 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
         setIsLoggedIn,
         accessToken,
         setAccessToken,
-        arrivalMessage,
     } = useContext(GlobalContext);
     const navigate = useNavigate();
     const accessHeader = {
@@ -102,20 +107,33 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
     async function friendMessageOnClick(e, tid, fullname) {
         e.preventDefault();
         handleFriendMessageOnClick(tid, fullname);
+        async function unmarkNewMessageOnFriends(tid) {
+            friendList.forEach((friend) => {
+                if (String(friend._id) === tid) {
+                    friend.newMessages = 0;
+                }
+            });
+        }
+        unmarkNewMessageOnFriends(tid);
     }
-
     useEffect(() => {
         async function markNewMessageOnFriends(tid) {
             let online = 0;
             friendList.forEach((friend) => {
                 if (String(friend._id) === tid) {
-                    console.log(friend);
+                    let newMsgCounter = 0;
+                    if (friend.newMessages) {
+                        newMsgCounter = friend.newMessages + 1;
+                    } else {
+                        newMsgCounter = 1;
+                    }
+                    friend.newMessages = newMsgCounter;
                 }
             });
             setOnlineCounter(online);
         }
-        if (arrivalMessage && arrivalMessage.receiverId) {
-            markNewMessageOnFriends(arrivalMessage.receiverId);
+        if (arrivalMessage && arrivalMessage.SendBy) {
+            markNewMessageOnFriends(arrivalMessage.SendBy);
         }
     }, [arrivalMessage]);
 
@@ -180,38 +198,15 @@ function Friends({ handleFriendMessageOnClick, onlineUsers }) {
                         <ul className="friends-list">
                             {friendList.map((fr) => {
                                 return (
-                                    <li key={uuidv4()}>
-                                        <Link to={`${fr.Username}/profile`}>
-                                            <img
-                                                className="avatar"
-                                                src={
-                                                    process.env.REACT_APP_API +
-                                                    fr.Avatar
-                                                }
-                                                alt=""
-                                            />
-                                            {fr.isOnline ? (
-                                                <span className="green-dot"></span>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </Link>
-                                        <div
-                                            className="clickable"
-                                            onClick={(e) =>
-                                                friendMessageOnClick(
-                                                    e,
-                                                    fr._id,
-                                                    fr.Firstname +
-                                                        ' ' +
-                                                        fr.Lastname
-                                                )
-                                            }
-                                        >
-                                            {fr.Firstname + ' '}
-                                            {fr.Lastname + ' '}
-                                        </div>
-                                    </li>
+                                    <Friend
+                                        key={uuidv4()}
+                                        fr={fr}
+                                        friendMessageOnClick={
+                                            friendMessageOnClick
+                                        }
+                                        newMessagesCounter={fr.newMessages}
+                                        isChatOpen={isChatOpen}
+                                    />
                                 );
                             })}
                         </ul>

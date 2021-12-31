@@ -95,6 +95,7 @@ textarea {
     border-radius: 50%;
     display: inline-block;
 }
+
 .blue {
     color: var(--FBlue);
     font-size: 0.8em;

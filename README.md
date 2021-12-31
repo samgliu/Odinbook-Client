@@ -15,7 +15,6 @@
 
 -   adaptive view
 -   separate posts into pages
--   new chat notification
 
 # Status
 
