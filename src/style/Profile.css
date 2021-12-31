@@ -92,3 +92,16 @@
     text-overflow: hidden;
     width: 100%;
 }
+.img-wrapper {
+    position: relative;
+}
+.hover-text {
+    color: transparent;
+    font-size: 0.9em;
+    text-align: center;
+    position: absolute;
+    cursor: context-menu;
+}
+.hover-text:hover {
+    color: black;
+}

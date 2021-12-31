@@ -197,7 +197,12 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
                         <button onClick={(e) => handleCommentOpenClick(e)}>
                             <img src={commentIcon} alt="" />
                         </button>
-                        <p> {commentsCounter}</p>
+                        <p
+                            className="clickable"
+                            onClick={(e) => handleCommentOpenClick(e)}
+                        >
+                            {commentsCounter}
+                        </p>
                     </div>
                 </div>
 

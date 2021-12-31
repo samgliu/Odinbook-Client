@@ -15,7 +15,6 @@
 
 -   adaptive view
 -   separate posts into pages
--   profile avatar hover text
 -   new chat notification
 
 # Status

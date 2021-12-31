@@ -256,18 +256,44 @@ function ProfileDetail({
                 ) : (
                     <div className="author-container">
                         <div className="profile-left">
-                            <img
-                                className="profile-img"
-                                src={
-                                    ischangingavatar
-                                        ? previewimg
-                                        : `${
-                                              process.env.REACT_APP_API + avatar
-                                          }`
-                                }
-                                alt=""
-                                onClick={(e) => selectbtnonClick(e)}
-                            />
+                            {isUserProfile ? (
+                                <div className="img-wrapper">
+                                    <img
+                                        className="profile-img"
+                                        src={
+                                            ischangingavatar
+                                                ? previewimg
+                                                : `${
+                                                      process.env
+                                                          .REACT_APP_API +
+                                                      avatar
+                                                  }`
+                                        }
+                                        alt=""
+                                        onClick={(e) => selectbtnonClick(e)}
+                                    />
+                                    <p className="hover-text">
+                                        Click on image to change avatar
+                                    </p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <img
+                                        className="profile-img"
+                                        src={
+                                            ischangingavatar
+                                                ? previewimg
+                                                : `${
+                                                      process.env
+                                                          .REACT_APP_API +
+                                                      avatar
+                                                  }`
+                                        }
+                                        alt=""
+                                    />
+                                </div>
+                            )}
+
                             <div>
                                 <input
                                     type="file"
@@ -275,7 +301,7 @@ function ProfileDetail({
                                     onChange={(e) => onSelectChange(e)}
                                     style={{ display: 'none' }}
                                 />
-                                {ischangingavatar ? (
+                                {isUserProfile && ischangingavatar ? (
                                     <div>
                                         <button
                                             className="edit-button"
