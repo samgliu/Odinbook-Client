@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Odinbook-Client/static/css/main.573ba576.css",
-    "main.js": "/Odinbook-Client/static/js/main.eb358613.js",
+    "main.css": "/Odinbook-Client/static/css/main.52b38677.css",
+    "main.js": "/Odinbook-Client/static/js/main.df7e129c.js",
     "static/media/thumb.svg": "/Odinbook-Client/static/media/thumb.0e150e69380fe75c2a6854ac6964d819.svg",
     "static/media/selectPicture.svg": "/Odinbook-Client/static/media/selectPicture.de3d3453bafe496337ce0431bf49ce59.svg",
     "static/media/comment.svg": "/Odinbook-Client/static/media/comment.6cae2bcc8b02024df8885684a32f34d8.svg",
     "index.html": "/Odinbook-Client/index.html",
-    "main.573ba576.css.map": "/Odinbook-Client/static/css/main.573ba576.css.map",
-    "main.eb358613.js.map": "/Odinbook-Client/static/js/main.eb358613.js.map"
+    "main.52b38677.css.map": "/Odinbook-Client/static/css/main.52b38677.css.map",
+    "main.df7e129c.js.map": "/Odinbook-Client/static/js/main.df7e129c.js.map"
   },
   "entrypoints": [
-    "static/css/main.573ba576.css",
-    "static/js/main.eb358613.js"
+    "static/css/main.52b38677.css",
+    "static/js/main.df7e129c.js"
   ]
 }
