@@ -247,7 +247,10 @@ function ProfileDetail({
                             <button
                                 className="edit-button"
                                 type="submit"
-                                onClick={(e) => handleSubmitOnClick(e)}
+                                onClick={(e) => {
+                                    setIsEditing(false);
+                                    handleSubmitOnClick(e);
+                                }}
                             >
                                 Save
                             </button>
@@ -306,7 +309,6 @@ function ProfileDetail({
                                         <button
                                             className="edit-button"
                                             onClick={(e) => {
-                                                setIsEditing(false);
                                                 onsavebtnOnclicked(e);
                                             }}
                                         >

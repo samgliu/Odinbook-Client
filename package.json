@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run  --openssl-legacy-provider build",
-    "deploy": "gh-pages -d build"
+    "deploy": "echo 'samgliu.me' > ./build/CNAME && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
