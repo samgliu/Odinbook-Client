@@ -61,9 +61,6 @@ function Header() {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
     }
-    function navigateTo(link) {
-        navigate(link);
-    }
 
     return (
         <header>
@@ -110,9 +107,9 @@ function Header() {
                                         to={{
                                             pathname: `${resUser.Username}/profile/`,
                                         }}
-                                        onClick={(e) => {
+                                        onMouseDown={(e) => {
                                             e.preventDefault();
-                                            navigateTo(
+                                            navigate(
                                                 `${resUser.Username}/profile/`
                                             );
                                         }}
@@ -124,9 +121,9 @@ function Header() {
                                         to={{
                                             pathname: `${resUser.Username}/profile/`,
                                         }}
-                                        onClick={(e) => {
+                                        onMouseDown={(e) => {
                                             e.preventDefault();
-                                            navigateTo(
+                                            navigate(
                                                 `${resUser.Username}/profile/`
                                             );
                                         }}
