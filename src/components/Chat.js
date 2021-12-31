@@ -74,7 +74,7 @@ function Chat({
     async function sendMessage() {
         try {
             const params = `/send-message`;
-            console.log(targetId);
+            //console.log(targetId);
             const data = {
                 text: text,
                 receiverId: targetId,

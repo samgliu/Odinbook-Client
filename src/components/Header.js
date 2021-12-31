@@ -61,6 +61,9 @@ function Header() {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
     }
+    function navigateTo(link) {
+        navigate(link);
+    }
 
     return (
         <header>
@@ -107,6 +110,12 @@ function Header() {
                                         to={{
                                             pathname: `${resUser.Username}/profile/`,
                                         }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            navigateTo(
+                                                `${resUser.Username}/profile/`
+                                            );
+                                        }}
                                     >
                                         <strong>@{resUser.Username}</strong>
                                     </Link>
@@ -114,6 +123,12 @@ function Header() {
                                     <Link
                                         to={{
                                             pathname: `${resUser.Username}/profile/`,
+                                        }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            navigateTo(
+                                                `${resUser.Username}/profile/`
+                                            );
                                         }}
                                     >
                                         <strong>

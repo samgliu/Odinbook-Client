@@ -72,7 +72,7 @@ function Home() {
             //console.log('socket.id: ' + socket.current.id);
             socket.current.emit('addUser', user._id);
             socket.current.on('getUsers', (users) => {
-                console.log(users);
+                //console.log(users);
                 // use isMounted to fix memory leak
                 if (isMounted.current) setOnlineUser(users);
             });
@@ -94,7 +94,7 @@ function Home() {
     }*/
 
     function handleSocketSendMessage(rid, text) {
-        console.log(rid, text);
+        //console.log(rid, text);
         socket.current.emit('sendMessage', {
             senderId: user._id,
             receiverId: rid,

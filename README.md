@@ -5,6 +5,7 @@
     OdinBook client
 
     Server repository: https://github.com/samgliu/Odinbook
+    socket.io server: https://github.com/samgliu/Odinbook-socketio-server
     Server API Demo: https://fast-depths-49064.herokuapp.com/
 
     Client repository: https://github.com/samgliu/Odinbook-Client
@@ -13,6 +14,9 @@
 # TODO List
 
 -   adaptive view
+-   separate posts into pages
+-   profile avatar hover text
+-   new chat notification
 
 # Status
 
