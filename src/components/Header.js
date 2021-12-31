@@ -105,12 +105,12 @@ function Header() {
                                     </div>
                                     <Link
                                         to={{
-                                            pathname: `${resUser.Username}/profile`,
+                                            pathname: `/${resUser.Username}/profile`,
                                         }}
                                         onMouseDown={(e) => {
                                             e.preventDefault();
                                             navigate(
-                                                `${resUser.Username}/profile`
+                                                `/${resUser.Username}/profile`
                                             );
                                         }}
                                     >
@@ -119,12 +119,12 @@ function Header() {
                                     &nbsp;&nbsp;
                                     <Link
                                         to={{
-                                            pathname: `${resUser.Username}/profile`,
+                                            pathname: `/${resUser.Username}/profile`,
                                         }}
                                         onMouseDown={(e) => {
                                             e.preventDefault();
                                             navigate(
-                                                `${resUser.Username}/profile`
+                                                `/${resUser.Username}/profile`
                                             );
                                         }}
                                     >
