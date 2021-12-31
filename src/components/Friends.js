@@ -119,7 +119,8 @@ function Friends({
     useEffect(() => {
         async function markNewMessageOnFriends(tid) {
             let online = 0;
-            friendList.forEach((friend) => {
+            friendList.forEach((friend, index) => {
+                index++;
                 if (String(friend._id) === tid) {
                     let newMsgCounter = 0;
                     if (friend.newMessages) {
@@ -128,6 +129,8 @@ function Friends({
                         newMsgCounter = 1;
                     }
                     friend.newMessages = newMsgCounter;
+                    const newFriend = Object.assign({}, friend);
+                    friend = newFriend;
                 }
             });
             setOnlineCounter(online);

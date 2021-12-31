@@ -17,6 +17,7 @@ function Friend({ isChatOpen, newMessagesCounter, fr, friendMessageOnClick }) {
         setAccessToken,
         arrivalMessage,
     } = useContext(GlobalContext);
+    const [friend, setFriend] = useState(fr);
     const navigate = useNavigate();
     const accessHeader = {
         headers: {
@@ -24,17 +25,21 @@ function Friend({ isChatOpen, newMessagesCounter, fr, friendMessageOnClick }) {
         },
     };
 
+    useEffect(() => {
+        setFriend(Object.assign({}, fr));
+    }, [fr.newMessages]);
+
     return (
         <li>
-            <Link to={`${fr.Username}/profile`}>
+            <Link to={`${friend.Username}/profile`}>
                 <img
                     className="avatar"
-                    src={process.env.REACT_APP_API + fr.Avatar}
+                    src={process.env.REACT_APP_API + friend.Avatar}
                     alt=""
                 />
-                {!isChatOpen && newMessagesCounter && newMessagesCounter > 0 ? (
+                {!isChatOpen && friend.newMessages && friend.newMessages > 0 ? (
                     <span className="new-message-dot">
-                        <p>{newMessagesCounter}</p>
+                        <p>{friend.newMessages}</p>
                     </span>
                 ) : (
                     ''
@@ -46,13 +51,13 @@ function Friend({ isChatOpen, newMessagesCounter, fr, friendMessageOnClick }) {
                 onClick={(e) =>
                     friendMessageOnClick(
                         e,
-                        fr._id,
-                        fr.Firstname + ' ' + fr.Lastname
+                        friend._id,
+                        friend.Firstname + ' ' + fr.Lastname
                     )
                 }
             >
-                {fr.Firstname + ' '}
-                {fr.Lastname + ' '}
+                {friend.Firstname + ' '}
+                {friend.Lastname + ' '}
             </div>
         </li>
     );
