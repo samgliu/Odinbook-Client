@@ -305,9 +305,10 @@ function ProfileDetail({
                                     <div>
                                         <button
                                             className="edit-button"
-                                            onClick={(e) =>
-                                                onsavebtnOnclicked(e)
-                                            }
+                                            onClick={(e) => {
+                                                setIsEditing(false);
+                                                onsavebtnOnclicked(e);
+                                            }}
                                         >
                                             Save
                                         </button>
