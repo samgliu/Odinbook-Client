@@ -86,7 +86,6 @@ function Header({ isHomePage, handleChatOnClick }) {
                 />
                 {isSearchOpen && searchResult ? (
                     <div className="searchResultWrapper">
-                        <div className="searchResultWrapperHeader">Result</div>
                         <div className="searchResultContainer">
                             {searchResult.map((resUser) => (
                                 <div
