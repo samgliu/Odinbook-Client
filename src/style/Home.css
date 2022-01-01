@@ -70,7 +70,7 @@ body {
         min-width: 2em;
     }
     .contacts-container {
-        background-color: rgba(197, 195, 195, 0.2);
+        background-color: rgba(204, 204, 204, 0.2);
 
         border-radius: 0.25em;
         box-shadow: var(--bodyShadow);
