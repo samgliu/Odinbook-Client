@@ -16,8 +16,7 @@
     margin-top: 9vh;
 }
 .profile-container {
-    width: 75vw;
-    width: 650px;
+    width: 100%;
     max-width: 650px;
     background-color: white;
     border-radius: 0.25em;
@@ -104,4 +103,11 @@
 }
 .hover-text:hover {
     color: black;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-img {
+        width: 100px;
+        height: 100px;
+    }
 }

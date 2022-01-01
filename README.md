@@ -31,7 +31,7 @@
 -   Post/Comment/Like add/delete with picture
 -   Friend with other users
 -   Profile Edit
--   Real time chat
+-   Chat real-time with notification
 
 # config:
 

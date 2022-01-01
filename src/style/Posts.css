@@ -1,10 +1,12 @@
 /* create-post-container */
 .create-post-container {
+    width: 100%;
     max-width: 650px;
-    width: 75vw;
     background-color: white;
     border-radius: 0.5em;
     box-shadow: var(--bodyShadow);
+    display: flex;
+    flex-direction: column;
 }
 .create-post-container h3 {
     text-align: center;
@@ -15,20 +17,19 @@
     font-weight: 800;
     font-size: 1.4em;
 }
-.create-post-container textarea {
-    width: 90%;
-    max-width: 600px;
+.create-post-container .form-group {
+    display: flex;
+    padding: 0em 1em 0 1em;
+}
+.form-group textarea {
+    width: 99%;
     border: none;
     border-radius: 0.5em;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 8px;
     padding: 1em;
     font-size: 1.1em;
 }
-.create-post-container .form-group {
-    width: 75vw;
-    max-width: 650px;
-    padding: 0em 1em 0 1em;
-}
+
 /* new post */
 .newpost-form-container {
     display: flex;

@@ -24,7 +24,7 @@ body {
     justify-content: center;
 }
 .body-middle {
-    width: 75vw;
+    width: 75%;
     display: flex;
     flex-direction: column;
     gap: 1.2em;
@@ -33,6 +33,24 @@ body {
 .body-right {
     position: fixed;
     right: 0;
-    width: 30vw;
+    width: 25%;
     height: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .body {
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .body {
+        justify-content: flex-start;
+    }
+    .contacts-container {
+        font-size: 0.7em;
+    }
+    .chat-container {
+        font-size: 0.7em;
+    }
 }
