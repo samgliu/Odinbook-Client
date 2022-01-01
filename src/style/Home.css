@@ -6,7 +6,7 @@ body {
     background-color: #f0f2f5;
 }
 .body-container {
-    width: calc(100%-10em);
+    width: 96%;
     height: 100%;
     height: calc(90vh-3em);
     display: flex;
