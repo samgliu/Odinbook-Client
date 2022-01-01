@@ -13,7 +13,6 @@
 
 # TODO List
 
--   adaptive view
 -   separate posts into pages
 
 # Status
