@@ -4,7 +4,7 @@ import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import '../style/Friends.css';
 import Friend from './Friend';
-import chatIcon from '../images/chat.svg';
+
 const { v4: uuidv4 } = require('uuid');
 
 function Friends({
@@ -16,7 +16,6 @@ function Friends({
     const [friendRequestList, setFriendRequestList] = useState(null);
     const [friendList, setFriendList] = useState(null);
     const [onlineCounter, setOnlineCounter] = useState(null);
-    const [isContactsOpen, setIsContactsOpen] = useState(false);
     const {
         user,
         setUser,
@@ -141,11 +140,6 @@ function Friends({
             markNewMessageOnFriends(arrivalMessage.SendBy);
         }
     }, [arrivalMessage]);
-
-    function chatIconOnClick(e) {
-        e.preventDefault();
-        setIsContactsOpen(!isContactsOpen);
-    }
 
     return (
         <div className="contacts-container">

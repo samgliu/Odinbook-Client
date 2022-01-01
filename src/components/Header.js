@@ -5,7 +5,7 @@ import apiClient from './http-common';
 import logo from '../images/logo.png';
 import '../style/Header.css';
 
-function Header() {
+function Header({ isHomePage, handleChatOnClick }) {
     const { user, setUser, isLoggedIn, setIsLoggedIn, accessToken } =
         useContext(GlobalContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false); //FIXME change back to false
@@ -170,7 +170,16 @@ function Header() {
                             {user.Firstname}
                         </Link>
                     </li>
-
+                    <li
+                        className={
+                            isHomePage ? 'header-cell  clickable' : 'hidden'
+                        }
+                        onClick={(e) => {
+                            handleChatOnClick(e);
+                        }}
+                    >
+                        Chat
+                    </li>
                     <li className="header-cell">
                         <Link to="/" onClick={handleLogOut}>
                             <p>Sign Out</p>

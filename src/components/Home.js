@@ -26,6 +26,8 @@ function Home() {
     const [onlineUsers, setOnlineUser] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState('');
     const [newMessageNotification, setNewMessageNotification] = useState(false);
+    const [isHomePage, setIsHomePage] = useState(true);
+    const [isContactsOpen, setIsContactsOpen] = useState(true);
     const [chattingWith, setChattingWith] = useState(null);
     //const [socket, setSocket] = useState(null);
     const socket = useRef();
@@ -258,11 +260,17 @@ function Home() {
         setIsChatOpen(false);
     }
 
-    function markOnlineFriends(tid) {}
+    function handleChatOnClick(e) {
+        e.preventDefault();
+        setIsContactsOpen(!isContactsOpen);
+    }
 
     return (
         <div className="body-container">
-            <Header />
+            <Header
+                isHomePage={isHomePage}
+                handleChatOnClick={handleChatOnClick}
+            />
             <div className="body">
                 <div className="body-middle">
                     <NewPost
@@ -278,7 +286,7 @@ function Home() {
                         handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
                     />
                 </div>
-                <div className="body-right">
+                <div className={isContactsOpen ? 'body-right' : 'hidden'}>
                     <Friends
                         handleFriendMessageOnClick={(tid, fullname) =>
                             handleFriendMessageOnClick(tid, fullname)

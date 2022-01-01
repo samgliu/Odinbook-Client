@@ -36,6 +36,11 @@ body {
     width: 25%;
     height: 100%;
 }
+.chatIcon-container {
+    height: 50px;
+    cursor: pointer;
+    float: right;
+}
 
 @media screen and (max-width: 1024px) {
     .body {
@@ -45,12 +50,33 @@ body {
 
 @media screen and (max-width: 768px) {
     .body {
-        justify-content: flex-start;
+        justify-content: center;
     }
+    .body-middle {
+        width: 99%;
+    }
+
     .contacts-container {
-        font-size: 0.7em;
+        font-size: 0.8em;
     }
     .chat-container {
-        font-size: 0.7em;
+        font-size: 0.8em;
+    }
+    header ul {
+        padding-left: 0.4em;
+        gap: 0.4em;
+    }
+    header > ul li {
+        min-width: 2em;
+    }
+    .contacts-container {
+        background-color: rgba(197, 195, 195, 0.2);
+
+        border-radius: 0.25em;
+        box-shadow: var(--bodyShadow);
+    }
+    .contacts-container h1,
+    h2 {
+        font-size: 1.1em;
     }
 }
