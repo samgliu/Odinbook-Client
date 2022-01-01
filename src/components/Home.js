@@ -27,7 +27,7 @@ function Home() {
     const [arrivalMessage, setArrivalMessage] = useState('');
     const [newMessageNotification, setNewMessageNotification] = useState(false);
     const [isHomePage, setIsHomePage] = useState(true);
-    const [isContactsOpen, setIsContactsOpen] = useState(true);
+    const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [chattingWith, setChattingWith] = useState(null);
     //const [socket, setSocket] = useState(null);
     const socket = useRef();
