@@ -64,6 +64,7 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
 
     useEffect(() => {
         extractComments(post.Comments).then((cmts) => setComments(cmts));
+        //console.log(post.isLiked);
         setIsLiked(post.isLiked);
         setCommentsCounter(post.Comments.length);
         setLikesCounter(post.Likes.length);

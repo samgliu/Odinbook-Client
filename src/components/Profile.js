@@ -7,6 +7,7 @@ import apiClient from './http-common';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function Profile(props) {
     const {
@@ -26,7 +27,8 @@ function Profile(props) {
     const [isFriend, setIsFriend] = useState(false);
     const [isUserProfile, setIsUserProfile] = useState(false);
     const [profilePostsCounter, setProfilePostsCounter] = useState(null);
-
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const navigate = useNavigate();
     const accessHeader = {
         headers: {
@@ -138,7 +140,7 @@ function Profile(props) {
             //
         }
     }
-
+    /*
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
         async function getPostsData() {
@@ -205,6 +207,71 @@ function Profile(props) {
             navigate('/signin');
         }
     }, [setUser, setIsLoggedIn, setAccessToken, accessToken, username]);
+    */
+
+    async function getPostsData() {
+        if (accessToken != null && page) {
+            const accessHeader = {
+                headers: {
+                    'x-access-token': accessToken,
+                },
+            };
+            const resUser = await apiClient.get(
+                `/${username}/profile`,
+                accessHeader
+            );
+            const res = await apiClient.get(
+                `/${username}/page_profile?page=${page}&limit=${10}`,
+                accessHeader
+            );
+            setPage(page + 1);
+            setProfilePost(res.data);
+            setProfileData(resUser.data);
+            setProfilePostsCounter(res.data.length);
+            return res.data;
+        } else {
+            const refreshHeader = {
+                headers: {
+                    'x-refresh-token': sessionStorage.getItem('rt'),
+                },
+            };
+            //console.log(refreshHeader.headers['x-refresh-token']);
+            apiClient
+                .get('/refreshNewAccessToken', refreshHeader)
+                .then((response) => {
+                    if (response) {
+                        const token = response.data.accessToken;
+                        if (response.data.accessToken) {
+                            setAccessToken(token);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    //console.clear(); // clear 401
+                    setIsLoggedIn(false);
+                    navigate('/signin');
+                });
+        }
+    }
+
+    async function fetchData() {
+        const newData = await getPostsData();
+        setProfilePost(newData);
+        if (newData.length === profilePost.length) setHasMore(false);
+    }
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('bookUser'));
+
+        if (user !== null) {
+            //console.log('user is not null');
+            setIsLoggedIn(true);
+            setUser(user);
+            getPostsData();
+        } else {
+            navigate('/signin');
+        }
+    }, [setUser, setIsLoggedIn, setAccessToken, accessToken, username]);
 
     /* other program ex.
     async function postCommentData(name, content) {
@@ -219,7 +286,7 @@ function Profile(props) {
         const newComments = profileComments.filter((cmt) => cmt._id !== cid);
         setProfileComments(newComments);
     } */
-    if (profileData) {
+    if (profileData && profilePost) {
         return (
             <div className="profile-body-container">
                 <Header />
@@ -237,11 +304,28 @@ function Profile(props) {
                         profilePost={profilePost}
                         handleNewTargetPost={(nd) => handleNewTargetPost(nd)}
                     />
-                    <Posts
-                        posts={profilePost}
-                        handleDeletePost={(id) => handleDeletePost(id)}
-                        handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
-                    />
+                    <InfiniteScroll
+                        className="infinit-container"
+                        dataLength={profilePost.length} //This is important field to render the next data
+                        next={fetchData}
+                        hasMore={hasMore}
+                        loader={
+                            <h4 style={{ textAlign: 'center' }}>Loading...</h4>
+                        }
+                        endMessage={
+                            <p style={{ textAlign: 'center' }}>
+                                <b>End of Posts</b>
+                            </p>
+                        }
+                    >
+                        <Posts
+                            posts={profilePost}
+                            handleDeletePost={(id) => handleDeletePost(id)}
+                            handleCmtDelete={(c, p) =>
+                                handleCmtDeleteOnClick(c, p)
+                            }
+                        />
+                    </InfiniteScroll>
                 </div>
 
                 <Footer />

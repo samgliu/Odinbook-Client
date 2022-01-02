@@ -13,13 +13,11 @@
     Client repository: https://github.com/samgliu/Odinbook-Client
     Client Demo: https://samgliu.github.io/Odinbook-Client/
 
+# Status
+
 # TODO List
 
 -   split posts into pages
-
-# Status
-
--   Working on
 
 # Built With
 
@@ -33,6 +31,7 @@
 -   Friend with other users
 -   Profile Edit
 -   Chat real-time with notification
+-   Infinite scrolling posts
 
 # config:
 

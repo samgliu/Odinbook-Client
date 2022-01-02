@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import '../style/Home.css';
 
 function Home() {
@@ -29,6 +30,8 @@ function Home() {
     const [isHomePage, setIsHomePage] = useState(true);
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [chattingWith, setChattingWith] = useState(null);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     //const [socket, setSocket] = useState(null);
     const socket = useRef();
     const navigate = useNavigate();
@@ -197,6 +200,7 @@ function Home() {
         }
     }
 
+    /*
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
         //console.log(accessToken);
@@ -248,7 +252,69 @@ function Home() {
             navigate('/signin');
         }
     }, [setUser, setIsLoggedIn, accessToken]);
-    //}, [setUser, setIsLoggedIn, accessToken]);
+    //}, [setUser, setIsLoggedIn, accessToken]);*/
+    async function getPostsData() {
+        if (accessToken != null && page) {
+            const accessHeader = {
+                headers: {
+                    'x-access-token': accessToken,
+                },
+            };
+            const resUser = await apiClient.get('/posts', accessHeader);
+            const res = await apiClient.get(
+                `/page_posts?page=${page}&limit=${10}`,
+                accessHeader
+            );
+            setPage(page + 1);
+            const userData = resUser.data;
+            localStorage.setItem('bookUser', JSON.stringify(userData));
+            setUser(userData);
+            setPosts(res.data);
+            return res.data;
+        } else {
+            const refreshHeader = {
+                headers: {
+                    'x-refresh-token': sessionStorage.getItem('rt'),
+                },
+            };
+            //console.log(refreshHeader.headers['x-refresh-token']);
+            apiClient
+                .get('/refreshNewAccessToken', refreshHeader)
+                .then((response) => {
+                    if (response) {
+                        const token = response.data.accessToken;
+                        if (response.data.accessToken) {
+                            setAccessToken(token);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    //console.clear(); // clear 401
+                    setIsLoggedIn(false);
+                    navigate('/signin');
+                });
+        }
+    }
+
+    async function fetchData() {
+        const newData = await getPostsData();
+        setPosts(newData);
+        if (newData.length === posts.length) setHasMore(false);
+    }
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('bookUser'));
+        //console.log(accessToken);
+
+        if (user !== null) {
+            //console.log('user is not null');
+            setIsLoggedIn(true);
+            setUser(user);
+            getPostsData();
+        } else {
+            navigate('/signin');
+        }
+    }, [setUser, setIsLoggedIn, accessToken]);
 
     async function handleFriendMessageOnClick(tid, fullname) {
         setIsChatOpen(true);
@@ -279,12 +345,27 @@ function Home() {
                         sortPosts={sortPosts}
                         posts={posts}
                     />
-
-                    <Posts
-                        posts={posts}
-                        handleDeletePost={(id) => handleDeletePost(id)}
-                        handleCmtDelete={(c, p) => handleCmtDeleteOnClick(c, p)}
-                    />
+                    <InfiniteScroll
+                        dataLength={posts.length} //This is important field to render the next data
+                        next={fetchData}
+                        hasMore={hasMore}
+                        loader={
+                            <h4 style={{ textAlign: 'center' }}>Loading...</h4>
+                        }
+                        endMessage={
+                            <p style={{ textAlign: 'center' }}>
+                                <b>End of Posts</b>
+                            </p>
+                        }
+                    >
+                        <Posts
+                            posts={posts}
+                            handleDeletePost={(id) => handleDeletePost(id)}
+                            handleCmtDelete={(c, p) =>
+                                handleCmtDeleteOnClick(c, p)
+                            }
+                        />
+                    </InfiniteScroll>
                 </div>
                 <div className={isContactsOpen ? 'body-right' : 'hidden'}>
                     <Friends
