@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import apiClient from './http-common';
 import logo from '../images/logo.png';
 import '../style/Header.css';
@@ -9,7 +9,6 @@ function Header({ isHomePage, handleChatOnClick }) {
     const { user, setUser, isLoggedIn, setIsLoggedIn, accessToken } =
         useContext(GlobalContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false); //FIXME change back to false
-    //let keyword = '';
     const [keyword, setKeyword] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const navigate = useNavigate();
@@ -27,10 +26,6 @@ function Header({ isHomePage, handleChatOnClick }) {
         await apiClient.get('/logout');
         navigate('/signin');
     }
-    function handleChat(e) {
-        e.preventDefault();
-        console.log('Chat pressed');
-    }
 
     // search
     function searchOnFocus(e) {
@@ -42,10 +37,8 @@ function Header({ isHomePage, handleChatOnClick }) {
         setIsSearchOpen(false); //FIXME change back to false
     }
     async function searchOnEnter() {
-        //console.log(keyword);
         if (keyword !== '') {
             let arr = await searchUserFromServer(keyword);
-            //console.log(arr);
             setSearchResult(arr);
         }
     }
@@ -54,7 +47,6 @@ function Header({ isHomePage, handleChatOnClick }) {
             const params = `/user-search?searchKey=${keyword}`;
             const res = await apiClient.get(params, accessHeader);
             if (res.status === 200) {
-                //console.log(res.data);
                 return res.data;
             }
         } catch (err) {

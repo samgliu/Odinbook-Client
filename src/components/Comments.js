@@ -1,7 +1,5 @@
-import Post from './Post';
 import Comment from './Comment';
-import apiClient from './http-common';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import '../style/Comments.css';
 
@@ -10,16 +8,6 @@ function Comments({
     handleCommentDeleteOnClick,
     handleCmtDeleteOnClickLocal,
 }) {
-    //console.log(comments);
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
-
     async function cmtDeleteOnClick(cid) {
         await handleCommentDeleteOnClick(cid);
     }
@@ -27,7 +15,6 @@ function Comments({
         await handleCmtDeleteOnClickLocal(id);
     }
     const commentRender = (comment) => {
-        //console.log(comment);
         return (
             <Comment
                 comment={comment}

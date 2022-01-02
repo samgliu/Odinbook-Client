@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
@@ -20,37 +19,12 @@ function Chat({
     const [friendName, setFriendName] = useState('');
     const [roomId, setRoomId] = useState(null);
     const [targetId, setTargetId] = useState(null);
-    const navigate = useNavigate();
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-        timeSince,
-    } = useContext(GlobalContext);
+    const { user, accessToken, timeSince } = useContext(GlobalContext);
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
         },
     };
-    /*
-    async function extractFriendName(data) {
-        if (data && data.Members) {
-            console.log(data.Members);
-            if (data.Members[0].Username === user.Username) {
-                return (
-                    data.Members[1].Firstname + ' ' + data.Members[1].Lastname
-                );
-            } else {
-                return (
-                    data.Members[0].Firstname + ' ' + data.Members[0].Lastname
-                );
-            }
-        }
-    }
-*/
     async function fetchChatHistory(userId, targetId) {
         try {
             setTargetId(targetId);
@@ -74,7 +48,6 @@ function Chat({
     async function sendMessage() {
         try {
             const params = `/send-message`;
-            //console.log(targetId);
             const data = {
                 text: text,
                 receiverId: targetId,

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
@@ -14,15 +14,8 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
     const [previewimg, setPreviewimg] = useState();
     const [imgblob, setImgblob] = useState(null);
     const [isUploadingPicture, setIsUploadingPicture] = useState(false);
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
-    const navigate = useNavigate();
+    const { user, accessToken } = useContext(GlobalContext);
+
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
@@ -30,7 +23,6 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
     };
 
     function validator() {
-        //console.log(state);
         if (state.content === '') {
             setErrors('Some field is empty!');
         } else if (state.content.length > 250) {
@@ -67,24 +59,16 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
                     'x-access-token': accessToken,
                 },
             };
-            const res = await apiClient.post(
-                params,
-                //JSON.stringify(state),
-                data,
-                accessHeader
-            );
+            const res = await apiClient.post(params, data, accessHeader);
 
             if (res.status === 200) {
-                //console.log(res.data);
                 res.data.isAuth = true;
                 const newComments = [...comments, res.data];
-                //console.log(newComments);
                 handleNewTargetComment(newComments);
                 setState({
                     picture: '',
                     content: '',
                 });
-                //navigate('/');
             }
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
@@ -93,9 +77,7 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
 
     const onSelectChange = async (e) => {
         e.preventDefault();
-        //console.log(e.target.files);
         if (e.target.files.length !== 0) {
-            //console.log(e.target.files[0]);
             setPreviewimg(window.URL.createObjectURL(e.target.files[0]));
         }
 
@@ -130,8 +112,6 @@ function NewComment({ comments, handleNewTargetComment, postId }) {
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
-        //await saveAvatartoserver(imgblob);
-        //setIschangingavatar(false);
     }
 
     return (

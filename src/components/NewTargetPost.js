@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
@@ -15,14 +15,7 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     const [imgblob, setImgblob] = useState(null);
     const [isUploadingPicture, setIsUploadingPicture] = useState(false);
 
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
+    const { accessToken } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     const accessHeader = {
@@ -32,7 +25,6 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
     };
 
     function validator() {
-        //console.log(state);
         if (state.content === '') {
             setErrors('Some field is empty!');
         } else if (state.content.length > 1000) {
@@ -122,8 +114,6 @@ function NewTargetPost({ profilePost, username, handleNewTargetPost }) {
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
-        //await saveAvatartoserver(imgblob);
-        //setIschangingavatar(false);
     }
     return (
         <div className="create-post-container">

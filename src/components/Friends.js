@@ -16,15 +16,7 @@ function Friends({
     const [friendRequestList, setFriendRequestList] = useState(null);
     const [friendList, setFriendList] = useState(null);
     const [onlineCounter, setOnlineCounter] = useState(null);
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
-    const navigate = useNavigate();
+    const { user, accessToken } = useContext(GlobalContext);
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
@@ -43,8 +35,6 @@ function Friends({
             let online = 0;
             friendList.forEach((friend) => {
                 onlineUsers.forEach((user) => {
-                    //console.log(String(friend._id));
-                    //console.log(String(user.userId));
                     if (String(friend._id) === String(user.userId)) {
                         friend.isOnline = true;
                         online = online + 1;
@@ -56,7 +46,6 @@ function Friends({
         if (friendList && onlineUsers) {
             checkOnlineUsers();
         }
-        //return () => setOnlineCounter(0);
     }, [
         user,
         friendList,

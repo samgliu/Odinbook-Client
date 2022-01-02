@@ -1,5 +1,4 @@
 import { useNavigate, Link } from 'react-router-dom';
-import Header from '../components/Header';
 import { useState } from 'react';
 import apiClient from './http-common';
 import logo from '../images/logo.png';
@@ -18,7 +17,6 @@ function SignUp() {
     const navigate = useNavigate();
 
     function validator() {
-        //console.log(state);
         if (
             state.firstname === '' ||
             state.lastname === '' ||

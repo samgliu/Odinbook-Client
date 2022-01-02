@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import NewComment from './NewComment';
 import PostDropdownButton from './PostDropdownButton';
-//import CommentDropdownButton from './CommentDropdownButton';
 import Comments from './Comments';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
@@ -10,21 +9,13 @@ import thumbIcon from '../images/thumb.svg';
 import commentIcon from '../images/comment.svg';
 
 function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
-    const navigate = useNavigate();
     const [comments, setComments] = useState(null);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [hasAuth, setHasAuth] = useState(false);
     const [commentsCounter, setCommentsCounter] = useState(null);
     const [likesCounter, setLikesCounter] = useState(null);
     const [isLiked, setIsLiked] = useState(null);
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
+    const { user, accessToken } = useContext(GlobalContext);
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
@@ -64,7 +55,6 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
 
     useEffect(() => {
         extractComments(post.Comments).then((cmts) => setComments(cmts));
-        //console.log(post.isLiked);
         setIsLiked(post.isLiked);
         setCommentsCounter(post.Comments.length);
         setLikesCounter(post.Likes.length);
@@ -102,7 +92,6 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
             const params = `/${postId}/like`;
             const res = await apiClient.get(params, accessHeader);
             if (res.status === 200) {
-                //console.log(res.data);
                 setIsLiked(true);
                 setLikesCounter(likesCounter + 1);
             }
@@ -117,7 +106,6 @@ function Post({ post, handleDeletePost, handleCmtDeleteOnClick }) {
             const params = `/${postId}/unlike`;
             const res = await apiClient.get(params, accessHeader);
             if (res.status === 200) {
-                //console.log(res.data);
                 setIsLiked(false);
                 setLikesCounter(likesCounter - 1);
             }

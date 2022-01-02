@@ -6,27 +6,20 @@ import Friends from '../components/Friends';
 import Chat from '../components/Chat';
 import apiClient from './http-common';
 import { io } from 'socket.io-client';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import '../style/Home.css';
 
 function Home() {
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
+    const { user, setUser, setIsLoggedIn, accessToken, setAccessToken } =
+        useContext(GlobalContext);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [posts, setPosts] = useState([]);
     const [messageTid, setMessageTid] = useState([]);
     const [onlineUsers, setOnlineUser] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState('');
-    const [newMessageNotification, setNewMessageNotification] = useState(false);
     const [isHomePage, setIsHomePage] = useState(true);
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [chattingWith, setChattingWith] = useState(null);
@@ -74,10 +67,8 @@ function Home() {
     useEffect(() => {
         isMounted.current = true;
         if (user && socket && socket.current && socket.current.id) {
-            //console.log('socket.id: ' + socket.current.id);
             socket.current.emit('addUser', user._id);
             socket.current.on('getUsers', (users) => {
-                //console.log(users);
                 // use isMounted to fix memory leak
                 if (isMounted.current) setOnlineUser(users);
             });
@@ -86,17 +77,6 @@ function Home() {
             isMounted.current = false;
         };
     }, [user, accessToken]); // if user refresh too much
-
-    /*async function extractPost(data) {
-        let arr = [...data.Posts];
-        //console.log(data);
-        data.Friends.forEach((friend) => {
-            //console.log(friend);
-            arr.push(...friend.Posts);
-        });
-
-        return arr;
-    }*/
 
     function handleSocketSendMessage(rid, text) {
         //console.log(rid, text);
@@ -124,7 +104,6 @@ function Home() {
             });
         });
         data.Friends.forEach((friend) => {
-            //console.log(friend);
             const tempArr = friend.Posts;
             tempArr.forEach((post) => {
                 checkIsLiked(user._id, post.Likes).then((res) => {
@@ -133,7 +112,6 @@ function Home() {
                     arr.push(post);
                 });
             });
-            //arr.push(...friend.Posts);
         });
 
         return arr;
@@ -153,17 +131,7 @@ function Home() {
         const newPosts = posts.filter((post) => post._id !== id);
         setPosts(newPosts);
     }
-    /*
-    async function handleDropdownOnClick(postId) {
-        const params = `/${postId}/auth`;
-        const res = await apiClient.get(params, accessHeader);
-        if (res.status === 200) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-*/
+
     async function handleDeletePost(postId) {
         try {
             const params = `/${postId}/delete`;
@@ -176,18 +144,6 @@ function Home() {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
     }
-    /*
-    async function handleCmtDropdownOnClick(postId, cmtId) {
-        //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
-        const params = `/${postId}/comment/${cmtId}/cmt-auth`;
-        const res = await apiClient.get(params, accessHeader);
-        //console.log(res.data);
-        if (res.status === 200) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 
     async function handleCmtDeleteOnClick(postId, cmtId) {
         //console.log(`/${postId}/comment/${cmtId}/cmt-auth`);
@@ -200,59 +156,6 @@ function Home() {
         }
     }
 
-    /*
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('bookUser'));
-        //console.log(accessToken);
-        async function getPostsData() {
-            if (accessToken != null) {
-                const accessHeader = {
-                    headers: {
-                        'x-access-token': accessToken,
-                    },
-                };
-                const res = await apiClient.get('/posts', accessHeader);
-                const userData = res.data;
-                localStorage.setItem('bookUser', JSON.stringify(userData));
-                setUser(userData);
-                const posts = await extractPost(res.data);
-                const sortedPosts = await sortPosts(posts);
-                setPosts(sortedPosts);
-            } else {
-                const refreshHeader = {
-                    headers: {
-                        'x-refresh-token': sessionStorage.getItem('rt'),
-                    },
-                };
-                //console.log(refreshHeader.headers['x-refresh-token']);
-                apiClient
-                    .get('/refreshNewAccessToken', refreshHeader)
-                    .then((response) => {
-                        if (response) {
-                            const token = response.data.accessToken;
-                            if (response.data.accessToken) {
-                                setAccessToken(token);
-                            }
-                        }
-                    })
-                    .catch((error) => {
-                        //console.clear(); // clear 401
-                        setIsLoggedIn(false);
-                        navigate('/signin');
-                    });
-            }
-        }
-
-        if (user !== null) {
-            //console.log('user is not null');
-            setIsLoggedIn(true);
-            setUser(user);
-            getPostsData();
-        } else {
-            navigate('/signin');
-        }
-    }, [setUser, setIsLoggedIn, accessToken]);
-    //}, [setUser, setIsLoggedIn, accessToken]);*/
     async function getPostsData() {
         if (accessToken != null && page) {
             const accessHeader = {
@@ -277,7 +180,6 @@ function Home() {
                     'x-refresh-token': sessionStorage.getItem('rt'),
                 },
             };
-            //console.log(refreshHeader.headers['x-refresh-token']);
             apiClient
                 .get('/refreshNewAccessToken', refreshHeader)
                 .then((response) => {
@@ -304,10 +206,8 @@ function Home() {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
-        //console.log(accessToken);
 
         if (user !== null) {
-            //console.log('user is not null');
             setIsLoggedIn(true);
             setUser(user);
             getPostsData();

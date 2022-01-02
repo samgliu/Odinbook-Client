@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import apiClient from './http-common';
 
 const CommentDropdownButton = ({ handleDelete, hasAuth }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

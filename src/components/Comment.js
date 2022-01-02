@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import NewComment from './NewComment';
 import CommentDropdownButton from './CommentDropdownButton';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
@@ -10,14 +9,7 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
     const [hasAuth, setHasAuth] = useState(false);
     const [likesCounter, setLikesCounter] = useState(null);
     const [isLiked, setIsLiked] = useState(null);
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
+    const { accessToken } = useContext(GlobalContext);
     const navigate = useNavigate();
     const accessHeader = {
         headers: {
@@ -43,7 +35,6 @@ function Comment({ comment, handleCommentDeleteOnClick, deleteCmtLocal }) {
             const params = `/${commentId}/cmt-like`;
             const res = await apiClient.get(params, accessHeader);
             if (res.status === 200) {
-                //console.log(res.data);
                 setIsLiked(true);
                 setLikesCounter(likesCounter + 1);
             }

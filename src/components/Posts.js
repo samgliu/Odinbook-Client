@@ -1,19 +1,7 @@
 import Post from './Post';
-import apiClient from './http-common';
-import { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from '../context/GlobalState';
 import '../style/Posts.css';
 
 function Posts({ posts, handleDeletePost, handleCmtDelete }) {
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
-
     async function localHandleCmtDelete(c, p) {
         handleCmtDelete(c, p);
     }

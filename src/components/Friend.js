@@ -1,29 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import NewComment from './NewComment';
-import CommentDropdownButton from './CommentDropdownButton';
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
-import apiClient from './http-common';
-import thumbIcon from '../images/thumb.svg';
-const { v4: uuidv4 } = require('uuid');
 
 function Friend({ isChatOpen, newMessagesCounter, fr, friendMessageOnClick }) {
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-        arrivalMessage,
-    } = useContext(GlobalContext);
+    const { accessToken } = useContext(GlobalContext);
     const [friend, setFriend] = useState(fr);
-    const navigate = useNavigate();
-    const accessHeader = {
-        headers: {
-            'x-access-token': accessToken,
-        },
-    };
 
     useEffect(() => {
         setFriend(Object.assign({}, fr));

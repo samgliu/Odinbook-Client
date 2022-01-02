@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
@@ -15,15 +15,7 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
     const [imgblob, setImgblob] = useState(null);
     const [isUploadingPicture, setIsUploadingPicture] = useState(false);
 
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
-    const navigate = useNavigate();
+    const { user, accessToken } = useContext(GlobalContext);
     const accessHeader = {
         headers: {
             'x-access-token': accessToken,
@@ -31,7 +23,6 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
     };
 
     function validator() {
-        //console.log(state);
         if (state.content === '') {
             setErrors('Some field is empty!');
         } else if (state.content.length > 1000) {
@@ -62,7 +53,6 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
         }
     }
     async function newPostPostData(data) {
-        //console.log(data.picture);
         try {
             const params = `/create-post-self`;
             const accessHeader = {
@@ -80,7 +70,6 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
                     picture: '',
                     content: '',
                 });
-                //navigate('/');
             }
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
@@ -124,8 +113,6 @@ function NewPost({ handleNewSelfPost, extractPost, sortPosts, posts }) {
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
-        //await saveAvatartoserver(imgblob);
-        //setIschangingavatar(false);
     }
 
     return (

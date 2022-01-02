@@ -1,7 +1,3 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Posts from '../components/Posts';
-import NewPost from '../components/NewPost';
 import apiClient from './http-common';
 import uploadApiClient from './upload-common';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,14 +13,7 @@ function ProfileDetail({
     handleSetIsFriend,
     profileId,
 }) {
-    const {
-        user,
-        setUser,
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
-    } = useContext(GlobalContext);
+    const { accessToken } = useContext(GlobalContext);
     const [errors, setErrors] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [previewimg, setPreviewimg] = useState();
@@ -46,11 +35,7 @@ function ProfileDetail({
         },
     };
 
-    const navigate = useNavigate();
-    //console.log(profileData);
-
     function validator() {
-        //console.log(state);
         if (
             state.firstname === '' ||
             state.lastname === '' ||
@@ -99,11 +84,7 @@ function ProfileDetail({
         e.preventDefault();
         setIsEditing(!isEditing);
     }
-    /*
-    async function handleEditAvatarOnClick(e) {
-        e.preventDefault();
-        console.log(e);
-    }*/
+
     async function handleUnfriendOnClick(e) {
         e.preventDefault();
         try {
@@ -163,8 +144,6 @@ function ProfileDetail({
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
-        //await saveAvatartoserver(imgblob);
-        //setIschangingavatar(false);
     }
 
     useEffect(() => {

@@ -1,12 +1,11 @@
 import { useNavigate, Link } from 'react-router-dom';
-import Header from './Header';
 import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import apiClient from './http-common';
 import logo from '../images/logo.png';
 
 function SignIn() {
-    const { setUser, setIsLoggedIn, accessToken, setAccessToken } =
+    const { setUser, setIsLoggedIn, setAccessToken } =
         useContext(GlobalContext);
     const [errors, setErrors] = useState(null);
     const [state, setState] = useState({
@@ -17,7 +16,6 @@ function SignIn() {
     const navigate = useNavigate();
 
     function validator() {
-        //console.log(state);
         if (state.email === '' || state.password === '') {
             setErrors('Some field is empty!');
         } else {
