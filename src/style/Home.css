@@ -41,7 +41,15 @@ body {
     cursor: pointer;
     float: right;
 }
-
+.infinite-scroll-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.infinite-scroll-component > p,
+h4 {
+    max-width: 650px;
+}
 @media screen and (max-width: 1024px) {
     .body {
         justify-content: flex-start;
