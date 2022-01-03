@@ -15,7 +15,11 @@ function Friend({ isChatOpen, newMessagesCounter, fr, friendMessageOnClick }) {
             <Link to={`${friend.Username}/profile`}>
                 <img
                     className="avatar"
-                    src={process.env.REACT_APP_API + friend.Avatar}
+                    src={
+                        friend.Avatar
+                            ? process.env.REACT_APP_API + friend.Avatar
+                            : ''
+                    }
                     alt=""
                 />
                 {!isChatOpen && friend.newMessages && friend.newMessages > 0 ? (

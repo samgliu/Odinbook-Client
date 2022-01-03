@@ -199,14 +199,15 @@ function Home() {
     }
 
     async function fetchData() {
-        const newData = await getPostsData();
-        setPosts(newData);
-        if (newData.length === posts.length) setHasMore(false);
+        if (user !== null && accessToken != null) {
+            const newData = await getPostsData();
+            setPosts(newData);
+            if (newData.length === posts.length) setHasMore(false);
+        }
     }
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('bookUser'));
-
         if (user !== null) {
             setIsLoggedIn(true);
             setUser(user);
