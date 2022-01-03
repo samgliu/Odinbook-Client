@@ -1,9 +1,9 @@
 function Footer() {
     return (
         <div className="footer">
-            {`<a src="https://github.com/samgliu/Odinbook-Client" alt="">
+            {/*<a src="https://github.com/samgliu/Odinbook-Client" alt="">
                 Github
-            </a>`}
+    </a>*/}
         </div>
     );
 }
