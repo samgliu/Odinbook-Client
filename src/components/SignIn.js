@@ -37,10 +37,10 @@ function SignIn() {
             console.log(state);
         }
     }
-    async function signInPostData() {
+    async function signInPostData(theState) {
         try {
             const url = `/signin`;
-            const data = JSON.stringify(state);
+            const data = JSON.stringify(theState);
             const res = apiClient
                 .post(url, data)
                 .then((response) => {
@@ -68,6 +68,9 @@ function SignIn() {
         } catch (err) {
             //setPosts(fortmatResponse(err.response?.data || err));
         }
+    }
+    async function handleTestOnClick(e) {
+        await signInPostData({ email: 'test2@test2.com', password: '123456' }); // test account
     }
     return (
         <div className="signup">
@@ -108,6 +111,9 @@ function SignIn() {
                         onClick={(e) => handleSubmitOnClick(e)}
                     >
                         Log In
+                    </button>
+                    <button onClick={(e) => handleTestOnClick(e)}>
+                        Test Account Log In
                     </button>
                     <p>Test Account: test1@test1.com:123456</p>
                     <Link to="/signup">Create a new account</Link>
