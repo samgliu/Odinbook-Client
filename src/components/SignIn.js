@@ -70,6 +70,7 @@ function SignIn() {
         }
     }
     async function handleTestOnClick(e) {
+        e.preventDefault();
         await signInPostData({ email: 'test2@test2.com', password: '123456' }); // test account
     }
     return (
