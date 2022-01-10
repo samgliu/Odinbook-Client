@@ -112,17 +112,32 @@ function Profile(props) {
                     'x-access-token': accessToken,
                 },
             };
-            const resUser = await apiClient.get(
-                `/${username}/profile`,
-                accessHeader
-            );
+            const resUser = await apiClient
+                .get(`/${username}/profile`, accessHeader)
+                .then(async (res) => {
+                    //console.log(res.data);
+                    if (res.data) {
+                        setProfileId(res.data._id); //set target profile Id
+                        if (user._id === res.data._id) {
+                            setIsUserProfile(true);
+                        } else {
+                            setIsUserProfile(false);
+                            setIsFriend(
+                                await checkIsInFriend(
+                                    user._id,
+                                    res.data.Friends
+                                )
+                            );
+                        }
+                        setProfileData(res.data);
+                    }
+                });
             const res = await apiClient.get(
                 `/${username}/page_profile?page=${page}&limit=${10}`,
                 accessHeader
             );
             setPage(page + 1);
             setProfilePost(res.data);
-            setProfileData(resUser.data);
             setProfilePostsCounter(res.data.length);
             return res.data;
         } else {
