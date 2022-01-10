@@ -32,7 +32,7 @@ function SignIn() {
     async function handleSubmitOnClick(e) {
         e.preventDefault();
         if (validator()) {
-            await signInPostData();
+            await signInPostData(state);
         } else {
             console.log(state);
         }
