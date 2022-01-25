@@ -4,7 +4,8 @@
 
 [<img alt="" width="400px" src="public/odinBook.png" />](https://samgliu.github.io/Odinbook-Client/)
 
-    OdinBook client is a full-stack created for The Odin Project final project. It is a social web application similar to FaceBook.
+    OdinBook client is a full-stack created for The Odin Project final project.
+    It is a social web application similar to FaceBook.
 
 # Repositories
 
