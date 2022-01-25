@@ -8,6 +8,13 @@
 # testing
 /coverage
 
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+
 # production
 /build
 
