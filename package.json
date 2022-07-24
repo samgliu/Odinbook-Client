@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run  --openssl-legacy-provider build",
-    "deploy": "echo 'samgliu.me' > ./build/CNAME && gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +44,5 @@
   "devDependencies": {
     "gh-pages": "^3.2.3"
   },
-  "homepage": "https://samgliu.me/"
+  "homepage": "https://samgliu.github.io/Odinbook-Client/"
 }
