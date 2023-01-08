@@ -7,7 +7,7 @@
     OdinBook client is a full-stack created for The Odin Project final project.
     It is a social web application similar to FaceBook.
 
-[<h2>Live Demo</h2>](https://samgliu.github.io/Odinbook-Client/)
+- [<h2>Live Demo</h2>](https://samgliu.github.io/Odinbook-Client/)
 
 # Repositories
 
@@ -31,3 +31,4 @@ Client Demo: https://samgliu.github.io/Odinbook-Client/
 - Profile Edit
 - Chat real-time with notification
 - Infinite scrolling posts
+- CI/CD
