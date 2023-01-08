@@ -35,7 +35,8 @@ jobs:
 
       - name: Build
         run: npm run build
-        env: CI:''
+        env:
+          CI: false
 
       - name: Deploy
         run: |
@@ -48,4 +49,4 @@ jobs:
           user_email: ${{ secrets.USER_EMAIL }}
           github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
-          CI:''
+          CI: false
