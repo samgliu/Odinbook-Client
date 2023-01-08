@@ -32,6 +32,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Create env file
+        run: |
+          touch .env
+          echo REACT_APP_API="https://odinbook-server-production.up.railway.app" >> .env
+          echo REACT_APP_SOCKET="https://odinbook-socketio-server-production.up.railway.app" >> .env
+          cat .env
 
       - name: Build
         run: npm run build
