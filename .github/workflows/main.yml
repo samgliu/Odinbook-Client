@@ -36,8 +36,8 @@ jobs:
       - name: Create env file
         run: |
           touch .env
-          echo REACT_APP_API="https://odinbook-server-production.up.railway.app" >> .env
-          echo REACT_APP_SOCKET="https://odinbook-socketio-server-production.up.railway.app" >> .env
+          echo REACT_APP_API="https://odinbook-server.onrender.com" >> .env
+          echo REACT_APP_SOCKET="https://odinbook-socketio-server.onrender.com" >> .env
           cat .env
 
       - name: Build
